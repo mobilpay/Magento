@@ -1,0 +1,27 @@
+=======================================================================
+	INSTALLATION
+=======================================================================
+1. upload the files from files folder to your magento root directory
+1a. refresh the magento cache from admin->System->Cache Management
+
+2. log in to mobilpay.ro and go to "Admin->Conturi de comerciant"
+
+3. Add a new account, close the window afterwards
+
+4. press edit near your new added account, go to "Setari securitate" and note your "Identificator cont comerciant". 
+Download the "Certificat digital mobilpay"(private.key) and "Certificat cont comerciant"(public.cer). 
+
+4. upload your certificates above to: /app/code/local/Mobilpay/Cc/etc/certificates/
+
+=======================================================================
+	CONFIGURATION
+=======================================================================
+1. go to admin->System->Configuration->Payment Methods, check the Mobilpay CC and
+configure it according to the instructions written there.
+
+2. enable the RON currency in admin->System->Configuration->Currency Setup
+2.a1 expand "Currency Options" and make sure to select "leu" inside "Allowed currencies" selection box. 
+2.a2 set Base currency as leu
+Press "Save Config"
+
+2.b update the currency rates from admin->System->Manage Currency Rates

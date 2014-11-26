@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <!-- declare module's version information -->
+    <Mobilpay_Cc>
+      <!-- this version number will be used for database upgrades -->
+      <version>0.0.1</version>
+    </Mobilpay_Cc>
+  </modules>
+  <global>
+        <helpers>
+            <cc>
+                <class>Mobilpay_Cc_Helper</class>
+            </cc>
+            <appcode>
+                <class>Mobilpay_Cc_Helper_App</class>
+            </appcode>
+        </helpers>
+
+    <models>
+      <cc>
+        <class>Mobilpay_Cc_Model</class>
+	  </cc>
+    </models>
+
+    <resources>
+      <cc_setup>
+        <setup>
+          <module>Mobilpay_Cc</module>
+        </setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
+      </cc_setup>
+    </resources>
+
+
+        <blocks>
+            <cc><class>Mobilpay_Cc_Block</class></cc>
+        </blocks>
+        
+  </global>
+  <adminhtml>
+        <!-- nom du fichier de traduction pour la partie admin FACULTATIF -->
+        <translate>
+            <modules>
+                <Mobilpay_Cc>
+                    <files>
+                        <default>Mobilpay_Cc.csv</default>
+                    </files>
+                </Mobilpay_Cc>
+            </modules>
+        </translate>
+    </adminhtml>
+
+    <frontend>
+        <!-- nom du fichier de traduction pour la partie front FACULTATIF -->
+        <translate>
+            <modules>
+                <Mobilpay_Cc>
+                    <files>
+                        <default>Mobilpay_Cc.csv</default>
+                    </files>
+                </Mobilpay_Cc>
+            </modules>
+        </translate>
+        <routers>
+            <cc>
+                <use>standard</use>
+                <args>
+                    <module>Mobilpay_Cc</module>
+                    <frontName>cc</frontName>
+                </args>
+            </cc>
+        </routers>
+        <layout>
+            <updates>
+                <cc>
+                    <file>cc.xml</file>
+                </cc>
+            </updates>
+        </layout>        
+        
+    </frontend>
+
+	<default>
+        <payment>
+            <mobilpay_cc>
+                <active>1</active>
+                <payment_action>authorize</payment_action>
+                <debug>1</debug>
+                <model>cc/cc</model>
+				
+                <order_status>1</order_status>
+                
+                <order_status_confirmed_pending>1</order_status_confirmed_pending>
+                <order_status_confirmed>1</order_status_confirmed>
+                <order_status_paid_pending>1</order_status_paid_pending>
+                <order_status_paid>1</order_status_paid>
+                <order_status_canceled>1</order_status_canceled>
+                <order_status_credit>1</order_status_credit>
+
+                <title>MobilPay Credit Card</title>
+                <signature>your mobilpay signature id</signature>
+                <description>shopping cart</description>
+                <allowspecific>0</allowspecific>
+                <transactionmode>TEST</transactionmode>
+            </mobilpay_cc>
+        </payment>
+    </default>
+</config>
