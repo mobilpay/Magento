@@ -5,7 +5,7 @@
             <groups>
                 <mobilpay_cc translate="label" module="cc">
                      <!-- Nom du module de paiement dans la partie administration -->
-                    <label>MobilPay Credit Card</label>
+                    <label>mobilPay Credit Card</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
