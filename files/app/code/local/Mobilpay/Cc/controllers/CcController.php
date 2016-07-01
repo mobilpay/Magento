@@ -144,7 +144,13 @@ class Mobilpay_Cc_CcController extends Mage_Core_Controller_Front_Action
             if ($envKey && $envData)
             {
                 $path = Mage::getModuleDir('local', 'Mobilpay_Cc') . DS . "etc/certificates" . DS;
-                $privateKeyFilePath = $path . 'private.key';
+                $cc = Mage::getModel('cc/cc');
+                if ($cc->getConfigData('debug') == 1) {
+                            $privateKeyFilePath = $path . "sandbox.".$cc->getConfigData('signature')."private.key";
+                        }
+                        else {
+                            $privateKeyFilePath = $path . "live.".$cc->getConfigData('signature')."private.key";
+                        }
                 try
                 {
                     $objPmReq = Mobilpay_Payment_Request_Abstract::factoryFromEncrypted($envKey, $envData, $privateKeyFilePath);
