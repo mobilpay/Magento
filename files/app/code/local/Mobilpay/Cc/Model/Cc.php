@@ -57,11 +57,11 @@ class Mobilpay_Cc_Model_Cc extends Mage_Payment_Model_Method_Abstract
             
             $objPmReqCard->signature = $this->getConfigData('signature');
             
-            if ($this->config->get('mobilpay_test')) {
-                    $x509FilePath = DIR_APPLICATION .'Mobilpay/cert/sandbox.'.$this->config->get('mobilpay_signature').'.public.cer';
+            if ($this->getConfigData('debug') == 1) {
+                    $x509FilePath = Mage::getModuleDir('local', 'Mobilpay_Cc') . DS . "etc/certificates" . DS . "sandbox.".$this->getConfigData('signature').".public.cer";
                 }
                 else {
-                    $x509FilePath = DIR_APPLICATION .'Mobilpay/cert/live.'.$this->config->get('mobilpay_signature').'.public.cer';
+                    $x509FilePath = Mage::getModuleDir('local', 'Mobilpay_Cc') . DS . "etc/certificates" . DS . "live.".$this->getConfigData('signature').".public.cer";
                 }
             
             $objPmReqCard->orderId = $this->getQuote()->getReservedOrderId();
