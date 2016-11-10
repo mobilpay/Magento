@@ -103,7 +103,7 @@ class Ipn extends \Magento\Framework\App\Action\Action
                 if ($objPmReq->objPmNotify->errorCode != 0) {
                     $this->_handlePaymentDenial();
                 } else {
-                    $this->_handleAuthorization();
+                    $this->_handleCapturePending();
                 }
                 break;
 
@@ -242,8 +242,9 @@ class Ipn extends \Magento\Framework\App\Action\Action
             $this->_objPmReq->objPmNotify->errorMessage
         );
         //$payment->setNotificationResult(true);
-        $payment->setIsTransactionClosed(true);
-        $payment->save();
+        // $payment->setIsTransactionClosed(true);
+		$payment->setIsTransactionClosed(0);
+		$payment->save();
         //$payment->registerPaymentReviewAction(Mage_Sales_Model_Order_Payment::REVIEW_ACTION_DENY, false);
         //$this->_order->setStatus(Order::STATE_CANCELED);
         $this->_order->addStatusToHistory(Order::STATE_CANCELED, $this->_objPmReq->objPmNotify->errorMessage);
@@ -314,10 +315,10 @@ class Ipn extends \Magento\Framework\App\Action\Action
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
         $payment->addTransactionCommentsToOrder(
-            $transaction,
-            $this->_objPmReq->objPmNotify->errorMessage
+            '',
+            'Tranzactie in procesare'
         );
-        $this->_createInvoice(":c");
+        $this->_order->setStatus(Order::STATE_PAYMENT_REVIEW);
         $this->_order->save();
 
     }
@@ -341,7 +342,7 @@ class Ipn extends \Magento\Framework\App\Action\Action
             $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId);
             $payment->setParentTransactionId($this->_objPmReq->objPmNotify->purchaseId);
             $payment->registerCaptureNotification($this->_objPmReq->objPmNotify->processedAmount);
-            $this->_order->sendNewOrderEmail(":f");
+            //$this->_order->sendNewOrderEmail(":f");
 
         }
         $trans = $this->_builderInterface;
