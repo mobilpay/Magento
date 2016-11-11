@@ -32,8 +32,7 @@ define(
 
         return Component.extend({
 
-console.log('quoteId' + quote.getQuoteId());
-            defaults: {
+        defaults: {
                 template: 'Mobilpay_Credit/payment/cardcc'
             },
             placeOrder: function (data, event) {
@@ -64,7 +63,7 @@ console.log('quoteId' + quote.getQuoteId());
                 return window.checkoutConfig.payment.checkmo.mailingAddress;
             },
             afterPlaceOrder: function () {
-                window.location.replace(url.build('mobilpaycredit/cc/redirect/quote/' + Base64.encode(quote.getQuoteId())));
+                window.location.replace(url.build('mobilpaycredit/cc/redirect/quote/' + quote.getQuoteId()));
             }
 
         });
