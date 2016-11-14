@@ -38,14 +38,19 @@ class Redirect extends \Magento\Framework\View\Element\Template
         $connection = $this->_resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
         $tblSalesOrder = $connection->getTableName('sales_order');
 	$quoteId = $this->getRequest()->getParam('quote');
-		if (is_numeric($quoteId)) {
+	/** @var \Magento\Framework\App\ObjectManager $ */
+		$obm = \Magento\Framework\App\ObjectManager::getInstance();
+	/** @var \Magento\Framework\App\Http\Context $context */
+		$context = $obm->get('Magento\Framework\App\Http\Context');
+	/** @var bool $isLoggedIn */
+		$isLoggedIn = $context->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
+		if ($isLoggedIn) {
 			$orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId));
-		}
+			}
 		else {	
 			$orderId = $connection->fetchAll('SELECT sales_order.entity_id FROM sales_order INNER JOIN quote_id_mask ON sales_order.quote_id=quote_id_mask.quote_id AND quote_id_mask.masked_id='.$connection->quote($quoteId));
-			
-		}
-        return $this->_orderFactory->load($orderId);
+			}
+		return $this->_orderFactory->load($orderId);
     }
 
 
