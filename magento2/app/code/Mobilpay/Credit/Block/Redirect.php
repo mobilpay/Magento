@@ -15,19 +15,15 @@ class Redirect extends \Magento\Framework\View\Element\Template
     protected $_resource;
 
     public function __construct(\Magento\Framework\View\Element\Template\Context $context,
-                                \Magento\Store\Model\StoreManagerInterface $storeManager,
                                 \Magento\Checkout\Model\Session $session,
                                 \Magento\Framework\Module\Dir\Reader $reader,
-                                \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
                                 \Magento\Framework\App\ResourceConnection $resource,
                                 \Magento\Sales\Model\Order $orderFactory,
                                 array $data)
     {
         $this->_resource = $resource;
         $this->_checkoutSession = $session;
-        $this->_storeManager = $storeManager;
         $this->_moduleDirReader = $reader;
-        $this->_scopeConfig = $scopeConfig;
         $this->_orderFactory = $orderFactory;
         parent::__construct($context, $data);
     }
