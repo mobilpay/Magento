@@ -70,7 +70,7 @@ class Ipn extends \Magento\Framework\App\Action\Action
         $this->_objPmReq = $objPmReq;
         $order_id = $objPmReq->orderId;
 
-        $this->_order = $this->_orderFactory->loadByIncrementId((int)$order_id);
+        $this->_order = $this->_orderFactory->load((int)$order_id);
 
         $this->_newOrderStatus = 'pending';
 
