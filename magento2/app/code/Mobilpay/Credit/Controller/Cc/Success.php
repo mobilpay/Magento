@@ -10,13 +10,11 @@ class Success extends \Magento\Framework\App\Action\Action
     protected $_messageManager;
     public function __construct(Context $context,
                                 \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-                                \Magento\Framework\Message\ManagerInterface $messageManager,
                                 \Magento\Sales\Model\Order $orderFactory
     )
     {
         $this->_orderFactory = $orderFactory;
         $this->resultPateFactory = $resultPageFactory;
-        $this->_messageManager = $messageManager;
         parent::__construct($context);
     }
     /**
