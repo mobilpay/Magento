@@ -39,6 +39,12 @@ class Success extends \Magento\Framework\App\Action\Action
             }
         }
 
+        if ($order->getCanSendNewEmailFlag()) { 
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $emailSender = $objectManager->create('\Magento\Sales\Model\Order\Email\Sender\OrderSender');
+            $emailSender->send($order);
+        } 
+
         $this->_eventManager->dispatch(
             'checkout_onepage_controller_success_action',
             ['order_ids' => [$orderId]]
