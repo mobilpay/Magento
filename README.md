@@ -51,5 +51,6 @@ Using such command <code>bin/magento setup:di:compile</code> to compile or regen
 Sometime remove the contents of actual cache folders such as <code>MagentoRoot/var/cache/</code> | <code>MagentoRoot/var/page_cache/</code> | <code>MagentoRoot/generated/code</code> is helping too
 
 ##### Good to know
-* NETOPIA Payments development team try to keep compatibility of the Magento module with latest version of Magento, in order to helping you to implamenting your ecomerce website faster.
 * To get the module compatible with previous versions of Magento, using the other branches of this GitHub repository.
+
+NETOPIA Payments development team try to keep compatibility of the Magento module with latest version of Magento, in order to helping you to implamenting your ecomerce website faster.
