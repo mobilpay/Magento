@@ -33,8 +33,9 @@ class Redirect extends \Magento\Framework\View\Element\Template
     public function getOrder()
     {
         $connection = $this->_resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
-        $tblSalesOrder = $connection->getTableName('sales_order');
-	$quoteId = $this->getRequest()->getParam('quote');
+        $tblSalesOrder = $this->_resource->getTableName('sales_order');
+        $tblQuoteIdMask = $this->_resource->getTableName('quote_id_mask');
+		$quoteId = $this->getRequest()->getParam('quote');
 	/** @var \Magento\Framework\App\ObjectManager $ */
 		$obm = \Magento\Framework\App\ObjectManager::getInstance();
 	/** @var \Magento\Framework\App\Http\Context $context */
@@ -45,7 +46,7 @@ class Redirect extends \Magento\Framework\View\Element\Template
 			$orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId));
 			}
 		else {	
-			$orderId = $connection->fetchAll('SELECT sales_order.entity_id FROM sales_order INNER JOIN quote_id_mask ON sales_order.quote_id=quote_id_mask.quote_id AND quote_id_mask.masked_id='.$connection->quote($quoteId));
+			$orderId = $connection->fetchAll('SELECT `'.$tblSalesOrder.'`.entity_id FROM `'.$tblSalesOrder.'` INNER JOIN `'.$tblQuoteIdMask.'` ON `'.$tblSalesOrder.'`.quote_id=`'.$tblQuoteIdMask.'`.quote_id AND `'.$tblQuoteIdMask.'`.masked_id='.$connection->quote($quoteId));
 			}
 		return $this->_orderFactory->load($orderId);
     }

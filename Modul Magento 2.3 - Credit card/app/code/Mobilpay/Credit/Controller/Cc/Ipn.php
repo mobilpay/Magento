@@ -9,8 +9,11 @@ require_once __DIR__ . '/../../Mobilpay/Payment/Invoice.php';
 use Magento\Framework\App\Action\Context;
 use Magento\Sales\Model\Order;
 use Magento\Framework\DataObject;
+use Magento\Framework\App\CsrfAwareActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\Request\InvalidRequestException;
 
-class Ipn extends \Magento\Framework\App\Action\Action
+class Ipn extends \Magento\Framework\App\Action\Action implements CsrfAwareActionInterface
 {
     protected $resultPateFactory;
     protected $_orderFactory;
@@ -40,6 +43,17 @@ class Ipn extends \Magento\Framework\App\Action\Action
      *
      * @return \Magento\Framework\Controller\ResultInterface
      */
+	 
+	public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
+    {
+        return null;
+    }
+
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
+    }
+     
     public function execute()
     {
         $objPmReq = $this->_processRequest();
