@@ -1,8 +1,12 @@
 <?php
 namespace Mobilpay\Credit\Controller\Cc;
+require_once __DIR__ . '/../../Mobilpay/Payment/Request/Abstract.php';
+require_once __DIR__ . '/../../Mobilpay/Payment/Request/Info.php';
+require_once __DIR__ . '/../../Mobilpay/Payment/Request/Card.php';
+require_once __DIR__ . '/../../Mobilpay/Payment/Request/Notify.php';
+require_once __DIR__ . '/../../Mobilpay/Payment/Address.php';
+require_once __DIR__ . '/../../Mobilpay/Payment/Invoice.php';
 use Magento\Framework\App\Action\Context;
-use Mobilpay_Payment_Request_Abstract;
-use Mobilpay_Payment_Request_Info;
 use Magento\Sales\Model\Order;
 use Magento\Framework\DataObject;
 
@@ -43,7 +47,7 @@ class Ipn extends \Magento\Framework\App\Action\Action
             die('Please post your data');
         try
         {
-            if ($objPmReq instanceof Mobilpay_Payment_Request_Info)
+            if ($objPmReq instanceof \Mobilpay_Payment_Request_Info)
             {
                 $this->_processRequestProduct($objPmReq);
             } else
@@ -53,7 +57,7 @@ class Ipn extends \Magento\Framework\App\Action\Action
         } catch (\Exception $e)
         {
 
-            $this->_sendResponse(Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_TEMPORARY, $e->getCode()+100, $e->getMessage());
+            $this->_sendResponse(\Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_TEMPORARY, $e->getCode()+100, $e->getMessage());
         }
     }
 
@@ -80,7 +84,7 @@ class Ipn extends \Magento\Framework\App\Action\Action
     {
 
         $errorCode = 0;
-        $errorType = Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_NONE;
+        $errorType = \Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_NONE;
         $errorMessage = '';
         $this->_initData($objPmReq);
 
@@ -132,8 +136,8 @@ class Ipn extends \Magento\Framework\App\Action\Action
                 break;
 
             default:
-                $errorType = Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_PERMANENT;
-                $errorCode = Mobilpay_Payment_Request_Abstract::ERROR_CONFIRM_INVALID_ACTION;
+                $errorType = \Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_PERMANENT;
+                $errorCode = \Mobilpay_Payment_Request_Abstract::ERROR_CONFIRM_INVALID_ACTION;
                 $errorMessage = 'mobilpay_refference_action paramaters is invalid';
                 break;
         }
@@ -387,11 +391,11 @@ class Ipn extends \Magento\Framework\App\Action\Action
 
                 try
                 {
-                    $objPmReq = Mobilpay_Payment_Request_Abstract::factoryFromEncrypted($envKey, $envData, $privateKeyFilePath);
+                    $objPmReq = \Mobilpay_Payment_Request_Abstract::factoryFromEncrypted($envKey, $envData, $privateKeyFilePath);
                 } catch (\Exception $e)
                 {
 
-                    $this->_sendResponse(Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_TEMPORARY, $e->getCode(), $e->getMessage());
+                    $this->_sendResponse(\Mobilpay_Payment_Request_Abstract::CONFIRM_ERROR_TYPE_TEMPORARY, $e->getCode(), $e->getMessage());
                 }
 
             }

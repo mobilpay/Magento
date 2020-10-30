@@ -32,7 +32,8 @@ class Success extends \Magento\Framework\App\Action\Action
         }else{
             if($order->getStatus()==Order::STATE_CANCELED || $order->getStatus()==Order::STATE_PAYMENT_REVIEW){
                 $msg = current($order->getAllStatusHistory())->getComment();
-                $this->_messageManager->addError($msg);
+                // $this->_messageManager->addError($msg);
+				$this->messageManager->addError($msg);
                 return $this->resultRedirectFactory->create()->setPath('checkout/cart');
             }
         }

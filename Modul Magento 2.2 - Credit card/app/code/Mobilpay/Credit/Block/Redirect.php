@@ -1,9 +1,10 @@
 <?php
 
 namespace Mobilpay\Credit\Block;
-use Mobilpay_Payment_Request_Card;
-use Mobilpay_Payment_Invoice;
-use Mobilpay_Payment_Address;
+require_once __DIR__ . '/../Mobilpay/Payment/Request/Abstract.php';
+require_once __DIR__ . '/../Mobilpay/Payment/Request/Card.php';
+require_once __DIR__ . '/../Mobilpay/Payment/Invoice.php';
+require_once __DIR__ . '/../Mobilpay/Payment/Address.php';
 
 class Redirect extends \Magento\Framework\View\Element\Template
 {
@@ -60,7 +61,7 @@ class Redirect extends \Magento\Framework\View\Element\Template
         $order = $this->getOrder();
         $result = [];
         try {
-            $objPmReqCard = new Mobilpay_Payment_Request_Card();
+            $objPmReqCard = new \Mobilpay_Payment_Request_Card();
 
             $objPmReqCard->signature = $this->getConfigData('signature');
 
@@ -69,20 +70,21 @@ class Redirect extends \Magento\Framework\View\Element\Template
             } else {
                 $x509FilePath = $filePath . DIRECTORY_SEPARATOR . "certificates" . DIRECTORY_SEPARATOR . "live." . $this->getConfigData('signature') . ".public.cer";
             }
-            $objPmReqCard->orderId = $this->getOrder()->getId();
+			
+			$objPmReqCard->orderId = $this->getOrder()->getId();
 
             $objPmReqCard->returnUrl = $this->getUrl('mobilpaycredit/cc/success');
             $objPmReqCard->confirmUrl = $this->getUrl('mobilpaycredit/cc/ipn/');
             $objPmReqCard->cancelUrl = $this->getUrl('mobilpaycredit/cc/cancel');
 
-            $objPmReqCard->invoice = new Mobilpay_Payment_Invoice();
+            $objPmReqCard->invoice = new \Mobilpay_Payment_Invoice();
 
             $objPmReqCard->invoice->currency = $order->getBaseCurrencyCode();
             $objPmReqCard->invoice->amount = $order->getBaseGrandTotal();
             $cart_description = $this->getConfigData('description');
             if ($cart_description != '') $objPmReqCard->invoice->details = $cart_description;
 
-            $billingAddress = new Mobilpay_Payment_Address();
+            $billingAddress = new \Mobilpay_Payment_Address();
 
             $company = $billing->getCompany();
             if (!empty($company)) {
@@ -111,8 +113,8 @@ class Redirect extends \Magento\Framework\View\Element\Template
 
 
             $objPmReqCard->invoice->setBillingAddress($billingAddress);
-
-            $shippingAddress = new Mobilpay_Payment_Address();
+/*
+            $shippingAddress = new \Mobilpay_Payment_Address();
 
             $company = $shipping->getCompany();
             if (!empty($company)) {
@@ -137,7 +139,7 @@ class Redirect extends \Magento\Framework\View\Element\Template
             $shippingAddress->mobilePhone = $shipping->getTelephone();
 
             $objPmReqCard->invoice->setShippingAddress($shippingAddress);
-
+*/
             $objPmReqCard->encrypt($x509FilePath);
         } catch (\Exception $e) {
             $result['status'] = 0;
@@ -149,7 +151,7 @@ class Redirect extends \Magento\Framework\View\Element\Template
             $result['data'] = $objPmReqCard->getEncData();
             $result['form_key'] = $objPmReqCard->getEnvKey();
             $result['billing'] = $billing->getData();
-            $result['shipping'] = $shipping->getData();
+            // $result['shipping'] = $shipping->getData();
 
         } else {
             $result['status'] = 0;
