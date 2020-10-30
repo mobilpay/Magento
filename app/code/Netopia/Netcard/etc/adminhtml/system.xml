@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="net_card" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <comment><![CDATA[<div class="netcard-payment-logo"></div><div class="netcard-payment-text"><b><a href="https://netopia-payments.com/" target="_blank">Netopia Payment</a></b><br/>
+                NETOPIA Payments îți pune la dispoziție cele mai performante, competitive și inovative soluții de încasare a tranzacțiilor online.<br/>
+                Ușor de integrat cu platforme Magento.</div>]]></comment>
+                <fieldset_css>complex netcard-section</fieldset_css>
+                <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
+
+                <group id="auth" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
+                    <label>Basic Configuration</label>
+                    <field id="signature" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Merchant Id / Signature</label>
+                    </field>
+                    <field id="username" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Username</label>
+                    </field>
+                    <field id="password" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Password</label>
+                    </field>
+                </group>
+                <group id="api" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
+                    <label>Advanced configuration </label>
+                    <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Enabled</label>
+                        <config_path>payment/net_card/active</config_path>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Title</label>
+                        <config_path>payment/net_card/title</config_path>
+                    </field>
+                    <field id="description" translate="label" type="textarea" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Description</label>
+                        <config_path>payment/net_card/description</config_path>
+                    </field>
+                    <field id="payment_action" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Payment Action</label>
+                        <source_model>Netopia\Netcard\Model\Adminhtml\Source\PaymentAction</source_model>
+                    </field>
+                    <field id="card_payment" translate="label" type="select" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0">
+                        <label>Allow Card Payment</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+                    <field id="qr_payment" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Allow mobilPay WALLET Payment</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+                    <field id="crypto_payment" translate="label" type="select"  sortOrder="50" showInDefault="0" showInWebsite="1" showInStore="0">
+                        <label>Allow Crypto Payment</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+                    <field id="debug" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Debug</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="sort_order" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1"
+                           showInStore="0">
+                        <label>Sort Order</label>
+                        <frontend_class>validate-number</frontend_class>
+                    </field>
+                </group>
+                <group id="mode" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
+                    <label>Mode Configuration</label>
+                    <field id="is_live" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Live Mode</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+
+                    
+                    <field id="live_public_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="20" showInDefault="1" showInWebsite="1" >
+                        <label>Live public key</label>
+                        <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
+                        <upload_dir></upload_dir>
+                    </field>
+
+                    <field id="live_private_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="30" showInDefault="1" showInWebsite="1" >
+                        <label>Live private key</label>
+                        <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
+                        <upload_dir></upload_dir>
+                    </field>
+
+                    <field id="sandbox_public_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="40" showInDefault="1" showInWebsite="1" >
+                        <label>Sandbox public key</label>
+                        <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
+                        <upload_dir></upload_dir>
+                    </field>
+
+                    <field id="sandbox_private_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="50" showInDefault="1" showInWebsite="1" >
+                        <label>Sandbox private key</label>
+                        <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
+                        <upload_dir></upload_dir>
+                    </field>
+                    
+
+                </group>
+                <group id="country" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Countries / Currencies available</label>
+                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="10" showInDefault="9"
+                           showInWebsite="1" showInStore="0">
+                        <label>Payment From Applicable Countries</label>
+                        <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                    </field>
+                    <field id="specificcountry" translate="label" type="multiselect" sortOrder="20" showInDefault="1"
+                           showInWebsite="1" showInStore="0">
+                        <label>Payment From Specific Countries</label>
+                        <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>
