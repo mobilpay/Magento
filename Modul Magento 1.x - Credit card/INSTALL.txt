@@ -1,0 +1,38 @@
+=======================================================================
+	INSTALLATION
+=======================================================================
+1. Upload the files from files folder to your magento root directory
+1a. refresh the magento cache from admin->System->Cache Management
+
+2. Log in to mobilpay.ro and go to "Admin->Conturi de comerciant"
+
+3. Add a new seller account if you don't already have one and make a synchronization with test server.
+
+4. Press Edit near your new added account, go to "Setari securitate" and note your "Identificator cont comerciant". 
+Download the security keys from live server - "Certificat digital mobilpay" (live.XXXX-XXXX-XXXX-XXXX-XXXXprivate.key) and "Certificat cont comerciant"(live.XXXX-XXXX-XXXX-XXXX-XXXX.public.cer).
+
+5. Go to Implementare->Testeaza implementarea. This will take you to sandbox server, then go to Admin->Conturi de comerciant, press Edit, go to tab 'Setari securitate' and download the security keys from test server - "Certificat digital mobilpay" (sandbox.XXXX-XXXX-XXXX-XXXX-XXXXprivate.key) and "Certificat cont comerciant"(sandbox.XXXX-XXXX-XXXX-XXXX-XXXX.public.cer).
+
+6. Upload the 4 certificates to your server in: /app/code/local/Mobilpay/Cc/etc/certificates/
+
+=======================================================================
+	CONFIGURATION
+=======================================================================
+1. Go to admin->System->Configuration->Payment Methods, check the Mobilpay CC and
+configure it according to the instructions written there.
+
+2. Enable the RON currency in admin->System->Configuration->Currency Setup
+2.a expand "Currency Options" and make sure to select "leu" inside "Allowed currencies" selection box. 
+2.b set Base currency as leu
+Press "Save Config"
+2.c Update the currency rates from admin->System->Manage Currency Rates
+
+=======================================================================
+	TESTS AND SELLER ACCOUNT ACTIVATION
+=======================================================================
+
+1. From the options select Sandbox mode: Yes, and make a few orders to test the implementation with the different credit card numbers from https://suport.mobilpay.ro/index.php?/Knowledgebase/Article/View/57/0/carduri-de-test or from Test documentation.
+   You can use 9900004810225098 CVV=111 and any expiry date in the future to make successful payments. Just change the CVV to something else (3 digits) to make rejected payments.
+2. After all the tests are successful, contact mobilpay at implementare@mobilpay.ro for your account activation.
+   Make sure you provide the shop URL, a customer account or activate guest checkout and sandbox mode is set to Yes.
+3. Once mobilPay activates the account, select Sandbox mode: No and you are ready to go live.
