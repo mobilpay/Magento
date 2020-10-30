@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Store/etc/config.xsd">
+    <default>
+        <payment>
+            <cardcc>
+                <active>1</active>
+                <title>mobilPay</title>
+                <debug>1</debug>
+                <signature>Admin-Conturi comerciant-Modifica-Setari securitate</signature>
+                <order_status>pending_payment</order_status>
+                <instructions>Leave blank</instructions>
+                <description>mobilPay magento2</description>
+                <payment_action>true</payment_action>
+                <model>Mobilpay\Credit\Model\Cardcc</model>
+                <group>offline</group>
+            </cardcc>
+            <!-- payment-config -->
+        </payment>
+    </default>
+</config>

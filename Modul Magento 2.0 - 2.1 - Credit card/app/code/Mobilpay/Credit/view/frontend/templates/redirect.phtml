@@ -1,0 +1,34 @@
+<?php /* @var Mobilpay\Credit\Block\Redirect $block */ ?>
+<?php
+$quote = $block->getQuote();
+$formData = $block->getFormData();
+$paymentUrl = ($block->getConfigData('debug') == 1) ? 'http://sandboxsecure.mobilpay.ro' : 'https://secure.mobilpay.ro';
+ //echo '<pre>';
+ //print_r($formData);
+ //echo '</pre>';
+?>
+<?php if($formData['status']):?>
+
+    <form method="post" id="mobilpay-form" action="<?php echo $paymentUrl ?>">
+            <input type="hidden" name="data" value="<?php echo $formData['data'] ?>"/>
+            <input type="hidden" name="env_key" id="env_key" value="<?php echo $formData['form_key'] ?>"/>
+<!--	<button type="submit" class="button">Go to Mobilpay</button> -->
+    </form>
+
+    <script>
+        document.getElementById('mobilpay-form').submit();
+    </script>
+
+<?php else:?>
+
+    <div class="warning">
+        <p> <?php echo $formData['message']?> </p>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a class="action primary continue" href="<?php /* @escapeNotVerified */ echo $block->getUrl() ?>"><span><?php /* @escapeNotVerified */ echo __('Continue Shopping') ?></span></a>
+        </div>
+    </div>
+
+<?php endif;?>
+

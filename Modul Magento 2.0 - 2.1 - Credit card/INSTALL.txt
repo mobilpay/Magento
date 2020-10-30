@@ -1,0 +1,22 @@
+=======================================================================
+	INSTALLATION
+=======================================================================
+1. upload the files from files folder to your magento root directory
+1a. ssh to your magento root and run php bin/magento setup:upgrade
+1b. ssh to your magento root and run php bin/magento setup:static-content:deploy
+1c. refresh the magento cache from admin->System->Cache Management
+
+2. log in to mobilpay.ro and go to "Admin->Conturi de comerciant"
+
+3. Add a new account (if there isn't one already added), close the window afterwards
+
+4. press edit near your new added account, go to "Setari securitate" and note your "Identificator cont comerciant". 
+Download the "Certificat digital mobilpay"(private.key) and "Certificat cont comerciant"(public.cer). 
+4b. go to Implementare - Testeaza implementarea (sandbox redirect) than do the same as 4 to download the sandbox certificates
+
+4. upload all 4 certificates above to: <magento_root>/app/code/Mobilpay/Credit/etc/certificates
+
+=======================================================================
+	CONFIGURATION
+=======================================================================
+1. go to your magento admin->Stores->Sales->Payment Methods and configure mobilPay according to the instructions written there.
