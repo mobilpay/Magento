@@ -215,7 +215,7 @@ abstract class Mobilpay_Payment_Request_Abstract
 			$objPmReq = new Mobilpay_Payment_Request_Card();
 			break;
 		case Mobilpay_Payment_Request_Abstract::PAYMENT_TYPE_SMS:
-//			$objPmReq =  new Mobilpay_Payment_Request_Sms();
+			$objPmReq =  new Mobilpay_Payment_Request_Sms();
 			break;
 		case Mobilpay_Payment_Request_Abstract::PAYMENT_TYPE_ADMIN:
 			$objPmReq =  new Mobilpay_Payment_Request_Admin();
@@ -234,9 +234,9 @@ abstract class Mobilpay_Payment_Request_Abstract
 	
 	static protected function _factoryFromQueryString($data)
 	{
-//		$objPmReq = new Mobilpay_Payment_Request_Sms();
-//		$objPmReq->_loadFromQueryString($data);
-//		return $objPmReq;
+		$objPmReq = new Mobilpay_Payment_Request_Sms();
+		$objPmReq->_loadFromQueryString($data);
+		return $objPmReq;
 	}
 	
 	protected function _setRequestInfo($reqVersion, $reqData)
