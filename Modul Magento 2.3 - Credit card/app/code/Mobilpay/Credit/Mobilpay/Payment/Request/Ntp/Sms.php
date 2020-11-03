@@ -8,12 +8,12 @@
  * 
  */
 
-require_once(__DIR__.'/../Sms.php');
+//require_once(__DIR__.'/../Sms.php');
 
-class Mobilpay_Payment_Request_Ntp_Sms extends Mobilpay_Payment_Request_Sms  
-{
-	function __construct()
-	{
-		parent::__construct();
-	}
-}
+//class Mobilpay_Payment_Request_Ntp_Sms extends Mobilpay_Payment_Request_Sms
+//{
+//	function __construct()
+//	{
+//		parent::__construct();
+//	}
+//}

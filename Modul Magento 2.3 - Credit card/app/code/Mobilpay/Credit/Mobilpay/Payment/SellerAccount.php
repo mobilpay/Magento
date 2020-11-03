@@ -40,8 +40,8 @@ class Mobilpay_Payment_SellerAccount
                     $sm = $pm->item(0)->getElementsByTagName('sms');
                     if ($sm->length == 1)
                     {
-                         $status = $sm->item(0)->nodeValue;
-                         $pm1['sms'] = $status;
+//                         $status = $sm->item(0)->nodeValue;
+//                         $pm1['sms'] = $status;
                     }
                     $card = $pm->item(0)->getElementsByTagName('card');
                     if ($sm->length == 1)
@@ -83,7 +83,7 @@ class Mobilpay_Payment_SellerAccount
           foreach ($this->paymentMethods as $type => $status)
           {
                if (in_array($type, array(
-                    'sms' , 
+//                    'sms' ,
                     'card')))
                {
                     $$type = $xmlDoc->createElement($type, $status);
