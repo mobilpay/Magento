@@ -10,7 +10,8 @@
         <payment>
             <net_card>
                 <model>NetcardFacade</model>
-                <title>Netopia Payment method ( Sandbox )</title>
+                <title>NETOPIA Payments</title>
+                <group>netopia</group>
                 <payment_action>true</payment_action>
                 <active>1</active>
                 <debug>1</debug>
@@ -45,7 +46,6 @@
                 <debugReplaceKeys>MERCHANT_KEY</debugReplaceKeys>
                 <paymentInfoKeys>cc_number,cc_type</paymentInfoKeys>
                 <privateInfoKeys>FRAUD_MSG_LIST</privateInfoKeys>
-                <group>netcard_group</group>
             </net_card>
         </payment>
     </default>
