@@ -79,25 +79,21 @@
                     <field id="live_public_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="20" showInDefault="1" showInWebsite="1" >
                         <label>Live public key</label>
                         <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
-                        <upload_dir></upload_dir>
                     </field>
 
                     <field id="live_private_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="30" showInDefault="1" showInWebsite="1" >
                         <label>Live private key</label>
                         <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
-                        <upload_dir></upload_dir>
                     </field>
 
                     <field id="sandbox_public_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="40" showInDefault="1" showInWebsite="1" >
                         <label>Sandbox public key</label>
                         <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
-                        <upload_dir></upload_dir>
                     </field>
 
                     <field id="sandbox_private_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="50" showInDefault="1" showInWebsite="1" >
                         <label>Sandbox private key</label>
                         <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
-                        <upload_dir></upload_dir>
                     </field>
                     
 
