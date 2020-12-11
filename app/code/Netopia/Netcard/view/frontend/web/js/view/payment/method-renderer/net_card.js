@@ -60,6 +60,10 @@ define(
 
             getQrCode: function() {
                 return window.checkoutConfig.payment.net_card.isQrCode;
+            },
+
+            getDescription: function(){
+                return window.checkoutConfig.payment.net_card.showDescription;
             }
         });
     }

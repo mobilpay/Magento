@@ -20,6 +20,7 @@ final class ConfigProvider implements ConfigProviderInterface
    * Netopia QR code path
    */
    const QR_CODE_PATH = 'payment/net_card/api/qr_payment';
+   const NET_CARD_DESCRIPTION = 'payment/net_card/description';
 
    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig)
    {
@@ -45,6 +46,7 @@ final class ConfigProvider implements ConfigProviderInterface
                         ClientMock::FAILURE => __('Fraud')
                     ],
                     'isQrCode' => $this->getAllowQrCode() ? "willDisplay" : '',
+                    'showDescription' => $this->getModuleDescription(),
                 ]
             ]
         ];
@@ -60,4 +62,10 @@ final class ConfigProvider implements ConfigProviderInterface
         else
             return false;
         }
+
+    protected function getModuleDescription()
+    {
+        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        return ($this->scopeConfig->getValue(self::NET_CARD_DESCRIPTION, $storeScope));
+    }
 }
