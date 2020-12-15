@@ -222,14 +222,13 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage);
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage. " - order Canceled by rejecting via NETOPIA admin panel - ");
         $this->_order->setStatus(Order::STATE_CANCELED);
         $this->_order->save();
     }
 
     protected function _handleAuthorization($underVerification = true)
     {
-
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
         $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId );
@@ -243,14 +242,14 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage);
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " | ");
         $payment->setIsTransactionClosed(0);
 
         if (!$underVerification) {
             $payment->setIsTransactionPending(false);
             $this->_createInvoice(":p");
             $payment->registerAuthorizationNotification($this->_objPmReq->objPmNotify->processedAmount);
-            $this->_order->setStatus(Order::STATE_PROCESSING);
+            $this->_order->setStatus(Order::STATE_PAYMENT_REVIEW);
         } else {
             $payment->setIsTransactionPending(true);
             $this->_order->setStatus(Order::STATE_PAYMENT_REVIEW);
@@ -259,9 +258,13 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         $this->_order->save();
     }
 
+    /**
+     * Handeling such case like:
+     * Card Expire
+     * Cod CVV2/CCV incorect
+     */
     protected function _handlePaymentDenial()
     {
-
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
         $payment->setLastTransId($this->_objPmReq->objPmNotify->purchaseId);
@@ -280,17 +283,16 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE);
 
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage);
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage );
 
         $payment->setIsTransactionClosed(0);
         $payment->save();
-        $this->_order->addStatusToHistory(Order::STATE_CANCELED, $this->_objPmReq->objPmNotify->errorMessage);
+        $this->_order->addStatusToHistory(Order::STATE_PENDING_PAYMENT, $this->_objPmReq->objPmNotify->errorMessage);
         $this->_order->save();
     }
 
     protected function _handleRefund()
     {
-
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
         $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId );
@@ -306,7 +308,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
 
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage);
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " - refund & close order - ");
         $payment->setIsTransactionClosed(true);
 
         $this->_order->getBaseTotalRefunded(-1 * $this->_objPmReq->objPmNotify->processedAmount);
@@ -319,7 +321,6 @@ class Ipn extends Action implements CsrfAwareActionInterface {
 
     protected function _handleCapturePending()
     {
-
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
         $payment->setIsTransactionClosed(0);
@@ -337,7 +338,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
-        $payment->addTransactionCommentsToOrder('', 'Tranzactie in procesare');
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " - review in NETOPIA admin panel   - ");
         $this->_order->setStatus(Order::STATE_PAYMENT_REVIEW);
         $this->_order->save();
 
@@ -372,8 +373,8 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE);
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage);
-        $this->_order->setStatus(Order::STATE_COMPLETE);
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " || ");
+        $this->_order->setStatus(Order::STATE_PROCESSING);
         $this->_order->save();
     }
 
