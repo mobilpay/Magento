@@ -16,7 +16,7 @@ class Redirect extends Action {
     private $pageFactory;
     protected $_resource;
     // protected $_orderFactory;
-
+    
     /**
      * Index constructor.
      * @param Context $context
@@ -65,7 +65,7 @@ class Redirect extends Action {
         $connection = $this->_resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
         $tblSalesOrder = $this->_resource->getTableName('sales_order');
         $tblQuoteIdMask = $this->_resource->getTableName('quote_id_mask');
-        $quoteId = $this->getRequest()->getParam('quote');
+        $quoteId = $this->getRequest()->getParam('quote');  // Quote Mask ID
 
         /** @var ObjectManager $ */
         $obm = ObjectManager::getInstance();
@@ -78,7 +78,23 @@ class Redirect extends Action {
         $isLoggedIn = $context->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
         if ($isLoggedIn) {
             $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId).' LIMIT 1');
-        } 
+            return $orderId[0]['entity_id'];
+        } else {
+            // Guest Checkout
+            $orderId = $this->getOrderGuest($quoteId);
+            return $orderId;
+        }        
+    }
+
+    public function getOrderGuest($quoteMaskId) {
+        $connection = $this->_resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
+        $tblSalesOrder = $this->_resource->getTableName('sales_order');
+        $tblQuoteIdMask = $this->_resource->getTableName('quote_id_mask');
+
+        $getQuoteID = $connection->fetchAll('SELECT quote_id FROM `'.$tblQuoteIdMask.'` WHERE `masked_id`="'.$quoteMaskId.'" LIMIT 1');
+        $quoteId = $getQuoteID[0]['quote_id'];
+        $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id="'.$quoteId.'" LIMIT 1');
         return $orderId[0]['entity_id'];
+        
     }
 }
