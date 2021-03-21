@@ -8,7 +8,7 @@
  * 
  */
 
-require_once(__DIR__.'/../Sms.php');
+// require_once(__DIR__.'/../Sms.php'); // SMS is not supported for magento plugin any more
 
 class Mobilpay_Payment_Request_Ntp_Sms extends Mobilpay_Payment_Request_Sms  
 {
