@@ -44,9 +44,6 @@
             //var_dump($this->orderId);
             if(is_null($this->signature) || is_null($this->orderId) || !($this->invoice instanceof MobilpayPaymentInvoice))
             {
-                var_dump('ggggg');
-                var_dump($this->orderId);
-                var_dump($this->invoice instanceof MobilpayPaymentInvoice);
                 throw new \Exception('One or more mandatory properties are invalid!', self::ERROR_PREPARE_MANDATORY_PROPERTIES_UNSET);
             }
 
