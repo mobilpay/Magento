@@ -235,7 +235,7 @@ abstract class Mobilpay_Payment_Request_Abstract
 	static protected function _factoryFromQueryString($data)
 	{
 		$objPmReq = new Mobilpay_Payment_Request_Sms();
-		$objPmReq->_loadFromQueryString($data); 
+		$objPmReq->_loadFromQueryString($data);
 		return $objPmReq;
 	}
 	

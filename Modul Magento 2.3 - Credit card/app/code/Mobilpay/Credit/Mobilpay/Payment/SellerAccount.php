@@ -83,7 +83,7 @@ class Mobilpay_Payment_SellerAccount
           foreach ($this->paymentMethods as $type => $status)
           {
                if (in_array($type, array(
-                    'sms' , 
+                    'sms' ,
                     'card')))
                {
                     $$type = $xmlDoc->createElement($type, $status);
