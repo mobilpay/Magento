@@ -91,8 +91,7 @@ class Mobilpay_Payment_Request
 	 */
 	public $m_params		= array();
 	
-	function Mobilpay_Payment_Request()
-	{
+	function __construct()	{
 		
 	}
 	
