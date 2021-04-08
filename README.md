@@ -1,4 +1,4 @@
-# NETOPIA Payments module for Magento 2.4
+# NETOPIA Payments module for Magento 2.4.2
 ###### (for previous versions using the other branches of this GitHub repository)
 
 ## Options
@@ -8,6 +8,7 @@
 ## Installation
 The Module placed in folder "Netopia"
 1. put **Netopia** folder inside of <your_magento_root>/app/code/
+    * verify the ownership & make sure have right user and/or group ownership
 2. SSH to your Magento server and run the following commands
     * <code>php bin/magento setup:upgrade</code>
     * <code>php bin/magento setup:static-content:deploy</code>
@@ -30,20 +31,24 @@ By run the following command you can make sure, if this module is installed succ
 Recommended to firstly, go to Admin panel & fill the necessary data
 <code><your_magento_admin>->Stores->Configuration->Sales->Payment Methods->Netopia Payments</code>
 
-* ####Necessary fileds
-    * Basic Configuration
-        * Merchant Id / Signature
-        * Username
-        * Password
-    * Advanced configuration 
-        * Enabled
-    * Mode Configuration
-        * Live Mode
+* #### Configuration
+    * Base configuration 
+    To enable / disable the payment method, switch to Live or Sandbox, ....
+    * Certificate Configuration 
+    To uploade / remove the public & private keys for Live & Sandbox
+    * Custom configuration
+    To set order status regarding the payment status, recommanded to use Defulte one 
+    * mobilPay WALLET Configuration
+    To give the possibility to your customers to pay via mobilPay as well
+    * Conditions / Agreements
+    To declare de agreements with NETOPIA Payments and send the agreement to NETOPIA Payments.
+        * before send the agreements, make sure you already uploaded the keys & save the setting & agreements.
         
-    Note : Except the **Basic Configuration** which is obligatory 
-    the other items, will configure with default value, if you don't set them.
+    Note : The fileds are not complited from configuration section, will set by default value, 
 
-
+## Where Keys / Certificates are located
+The Public & Private Keys for Live and Sandbox are located in <your_magento_root>/app/code/Netopia/Netcard/etc/certificates
+* make sure you have right ownership & permition
 ### Other general usefull note
 If in any case you update/upgrade your Magento Module & not see the changes, so maybe is cached.
 You can using such command like this <code>php bin/magento ca:cl</code> to clean the cache or
