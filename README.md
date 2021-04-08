@@ -13,8 +13,8 @@ The Module placed in folder "Netopia"
     * <code>php bin/magento setup:upgrade</code>
     * <code>php bin/magento setup:static-content:deploy</code>
     * <code>php bin/magento ca:cl</code>
-3.  Complete the **Basic Configuration**   
-4. Enable the module from **Advanced configuration**
+3.  Complete the **Configuration**   
+4.  **Enable** the module.
     ###### Additional option
     By Enable the **Allow mobilPay WALLET Payment** you will give this option to your clients to pay also via **mobilPay WALLET** by scan a simple **QrCode** 
 5. Download your keys from https://admin.mobilpay.ro/ for Live mode and https://sandbox.mobilpay.ro for Sandbox mode.
@@ -32,16 +32,11 @@ Recommended to firstly, go to Admin panel & fill the necessary data
 <code><your_magento_admin>->Stores->Configuration->Sales->Payment Methods->Netopia Payments</code>
 
 * #### Configuration
-    * Base configuration 
-    To enable / disable the payment method, switch to Live or Sandbox, ....
-    * Certificate Configuration 
-    To uploade / remove the public & private keys for Live & Sandbox
-    * Custom configuration
-    To set order status regarding the payment status, recommanded to use Defulte one 
-    * mobilPay WALLET Configuration
-    To give the possibility to your customers to pay via mobilPay as well
-    * Conditions / Agreements
-    To declare de agreements with NETOPIA Payments and send the agreement to NETOPIA Payments.
+    * **Base configuration** : To enable / disable the payment method, switch to Live or Sandbox, ....
+    * **Certificate Configuration** : To uploade / remove the public & private keys for Live & Sandbox
+    * **Custom configuration** : To set order status regarding the payment status, recommanded to use Defulte one 
+    * **mobilPay WALLET Configuration** : To set mobilPay WALLET setting
+    * **Conditions / Agreements** : To declare de agreements with NETOPIA Payments and send the agreement to NETOPIA Payments.
         * before send the agreements, make sure you already uploaded the keys & save the setting & agreements.
         
     Note : The fileds are not complited from configuration section, will set by default value, 
