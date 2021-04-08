@@ -174,7 +174,8 @@ abstract class MobilpayPaymentRequestAbstract
 		}
 
 		$data = null;
-		$result = @openssl_open($srcData, $data, $srcEnvKey, $privateKey);
+		$cipher_algo = 'RC4';
+		$result = @openssl_open($srcData, $data, $srcEnvKey, $privateKey, $cipher_algo);
 		if($result === false)
 		{
 			throw new \Exception('Failed decrypting data', self::ERROR_CONFIRM_FAILED_DECRYPT_DATA);
@@ -321,7 +322,8 @@ abstract class MobilpayPaymentRequestAbstract
 		$publicKeys	= array($publicKey);
 		$encData 	= null;
 		$envKeys 	= null;
-		$result 	= openssl_seal($srcData, $encData, $envKeys, $publicKeys);
+		$cipher_algo = 'RC4';
+		$result 	= openssl_seal($srcData, $encData, $envKeys, $publicKeys, $cipher_algo);
 		if($result === false)
 		{
 			$this->outEncData	= null;

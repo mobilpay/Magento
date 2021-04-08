@@ -35,7 +35,7 @@
             }
 
             $this->invoice = new MobilpayPaymentInvoice($elems->item(0));
-
+            
             return $this;
         }
 
@@ -116,6 +116,13 @@
             }
 
             $this->_xmlDoc->appendChild($rootElem);
+            ///////////////////
+            // $result = $this->_xmlDoc->save('/var/www/html/app/code/Netopia/testRequest.xml') ? true : false;
+            // if($result)
+            //     die("Xml request file saved localy!");
+            // else
+            //     die("Xml request file could not save localy!!");  
+            ///////////////////
             return $this;
         }
 

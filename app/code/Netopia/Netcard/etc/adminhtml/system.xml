@@ -15,24 +15,19 @@
                 <fieldset_css>complex netcard-section</fieldset_css>
                 <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
 
-                <group id="auth" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
-                    <label>Basic Configuration</label>
-                    <field id="signature" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Merchant Id / Signature</label>
-                    </field>
-                    <field id="username" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Username</label>
-                    </field>
-                    <field id="password" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Password</label>
-                    </field>
-                </group>
                 <group id="api" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
-                    <label>Advanced configuration </label>
+                    <label>Base configuration </label>
                     <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Enabled</label>
                         <config_path>payment/net_card/active</config_path>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="is_live" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Live Mode</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+                    <field id="signature" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Merchant Id / Signature</label>
                     </field>
                     <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Title</label>
@@ -42,21 +37,9 @@
                         <label>Description</label>
                         <config_path>payment/net_card/description</config_path>
                     </field>
-                    <field id="payment_action" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <!-- <field id="payment_action" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Payment Action</label>
                         <source_model>Netopia\Netcard\Model\Adminhtml\Source\PaymentAction</source_model>
-                    </field>
-                    <field id="card_payment" translate="label" type="select" sortOrder="40" showInDefault="0" showInWebsite="1" showInStore="0">
-                        <label>Allow Card Payment</label>
-                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
-                    </field>
-                    <field id="qr_payment" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Allow mobilPay WALLET Payment</label>
-                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
-                    </field>
-                    <field id="crypto_payment" translate="label" type="select"  sortOrder="50" showInDefault="0" showInWebsite="1" showInStore="0">
-                        <label>Allow Crypto Payment</label>
-                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
                     </field>
                     <field id="debug" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Debug</label>
@@ -66,16 +49,10 @@
                            showInStore="0">
                         <label>Sort Order</label>
                         <frontend_class>validate-number</frontend_class>
-                    </field>
+                    </field> -->
                 </group>
-                <group id="mode" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
-                    <label>Mode Configuration</label>
-                    <field id="is_live" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
-                        <label>Live Mode</label>
-                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
-                    </field>
-
-                    
+                <group id="mode" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
+                    <label>Certificate Configuration</label>
                     <field id="live_public_key" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="20" showInDefault="1" showInWebsite="1" >
                         <label>Live public key</label>
                         <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
@@ -95,12 +72,151 @@
                         <label>Sandbox private key</label>
                         <backend_model>Netopia\Netcard\Model\Config\Backend\CustomFileType</backend_model>
                     </field>
-                    
-
                 </group>
-                <group id="country" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+
+                <group id="custom" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
+                    <label>Custom configuration</label>
+                    <field id="custom_payment_complit" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Set status on payment completed</label>
+                            <source_model>Netopia\Netcard\Model\Config\Backend\PaymentComplit</source_model>
+                    </field>
+                    <field id="custom_payment_fraud" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Set status on payment review (Fraud)</label>
+                            <source_model>Netopia\Netcard\Model\Config\Backend\PaymentFraud</source_model>
+                    </field>
+                    <field id="custom_payment_cancel" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Set status on cancel payment</label>
+                            <source_model>Netopia\Netcard\Model\Config\Backend\PaymentCancel</source_model>
+                    </field>
+                </group>
+
+                <group id="auth" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">
+                    <label>mobilPay WALLET Configuration</label>
+                    <field id="qr_payment" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Allow mobilPay WALLET Payment</label>
+                        <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    </field>
+                    <field id="username" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Username</label>
+                    </field>
+                    <field id="password" translate="label" type="obscure" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Password</label>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    </field>
+                </group>
+                <group id="conditions" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Conditions / Agreements</label>
+                    <field id="complete_description" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Declare, have complete description</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Declare that there is a clear and complete description of the goods and services that we will sell</comment>
+                    </field>
+
+                    <field id="price_currency" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Declare, have clearly prices and currency</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Declare that the prices and currency are clear displayed for the goods / services</comment>
+                    </field>
+
+                    <field id="contact_info" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Declare, clarity of contact info</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Declare that, the contact details of the company (SC, CUI, address, telephone, fax / e-mail,...) are clearly displayed on the website </comment>
+                    </field>
+
+                    <field id="mandatory_pages" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Declare, clarity of content of mandatory pages</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Declare that, the mandatory pages (such as Terms and conditions, Privacy policy, Delivery policy, Return / Cancellation policy, GDPR, ...) are clearly displayed on the website </comment>
+                    </field>
+
+                    <field id="ssl_certificate" translate="label" type="select" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>SSL Certificate Support</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>If your website has a valid SSL certificate</comment>
+                    </field>
+                    
+                    <group id="forbidden" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Not accepted business / activities</label>
+                        <comment>
+                             <![CDATA[
+                                <p><strong>The following domains not accepted by VISA and MASTERCARD for online card payments:</strong></p>
+                                <ul>
+                                    <li>pharmaceutical: synthetic and natural products including food supplements</li>
+                                    <li>tobacco, including hookah, electronic cigarettes and supplies</li>
+                                    <li>all types of gambling (gambling, sports betting and not only, quizzes with participation fee and earn money, other games that offer money winnings: bingo, forex, auction sites, etc.)</li>
+                                    <li>adult materials: rental / sale of profile video tapes, (video) chat, dating, escorts</li>
+                                    <li>alcohol (except wine and beer)</li>
+                                    <li>hunting articles and products (knives and firearms, with classic and compressed ammunition)</li>
+                                    <li>video streaming (unless is provided evidence of ownership, copyright of the materials in question)</li>
+                                    <li>services regarding tarot, astrology and related</li>
+                                </ul>
+                                <p>Select <strong>"yes"</strong> to declare your activity is legal, regarding VISA & MASTERCARD policy.</p>
+                            ]]>
+                        </comment>
+                        <field id="forbidden_business" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Declare, of business / activities</label>
+                            <config_path>payment/net_card/forbidden_business</config_path>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <comment>Declare that we are not do trade on the list above also in none of the forbidden business / services</comment>
+                        </field>
+                    </group>
+
+                    <group id="urls" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Mandatory pages URL</label>
+                        <field id="terms_conditions_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Terms and conditions</label>
+                            <config_path>payment/net_card/terms_conditions_url</config_path>
+                            <comment>ex. somewhere/terms_and_conditions. without your actual domain name.</comment>
+                        </field>
+                        <field id="privacy_policy_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Privacy policy</label>
+                            <config_path>payment/net_card/privacy_policy_url</config_path>
+                            <comment>ex. somewhere/privacy_policy. without your actual domain name.</comment>
+                        </field>
+                        <field id="delivery_policy_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Delivery policy</label>
+                            <config_path>payment/net_card/delivery_policy_url</config_path>
+                            <comment>ex. somewhere/delivery_policy. without your actual domain name.</comment>
+                        </field>
+                        <field id="return_cancel_policy_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Return / Cancel policy</label>
+                            <config_path>payment/net_card/return_cancel_policy_url</config_path>
+                            <comment>ex. somewhere/delivery_policy. without your actual domain name.</comment>
+                        </field>
+                        <field id="gdpr_policy_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>GDPR policy</label>
+                            <config_path>payment/net_card/gdpr_policy_url</config_path>
+                            <comment>ex. somewhere/gdpr_policy. without your actual domain name.</comment>
+                        </field>
+                    </group>
+
+                    <group id="image" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Mandatory logo links</label>
+                        
+                        <field id="netopia_logo" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                            <label>Declare, used NETOPIA Payments logo</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <comment>Declare that, the NETOPIA Payments logo is clearly displayed on the website </comment>
+                        </field>
+
+                    </group>                    
+
+                    <!-- <field id="checkup" translate="label" type="button" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Self Validation</label>
+                        <frontend_model>Netopia\Netcard\Block\System\Config\SelfValidation</frontend_model>
+                        <comment>Save your configurations and then do self validation</comment>
+                    </field> -->
+                    <field id="golive" translate="label" type="button" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Ask NETOPIA Payments to verify the application</label>
+                        <frontend_model>Netopia\Netcard\Block\System\Config\SendToVerify</frontend_model>
+                        <comment>Send request to NETOPIA Payments</comment>
+                    </field>
+
+                </group>    
+                <group id="country" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Countries / Currencies available</label>
-                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="10" showInDefault="9"
+                    <field id="allowspecific" translate="label" type="allowspecific" sortOrder="10" showInDefault="1"
                            showInWebsite="1" showInStore="0">
                         <label>Payment From Applicable Countries</label>
                         <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>

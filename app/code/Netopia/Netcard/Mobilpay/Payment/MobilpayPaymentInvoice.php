@@ -101,7 +101,24 @@
                 }
             }
 
-            $this->items = array();
+            //$this->items = array();
+            // $this->items = new MobilpayPaymentInvoiceItem();
+            // $this->items = array(
+            //     0 => array(
+            //         "code" => "manual - MT07-L-Gray",
+            //         "name" => "Argus All-Weather Tank-L-Gray", 
+            //         "measurment" => "Buc",
+            //         "quantity" => 1,
+            //         "price" => 22,
+            //         "vat" => 0),
+            //     1 => array(
+            //         "code" => "manual - XXXL-Gray",
+            //         "name" => "Tank-L-Gray", 
+            //         "measurment" => "Buc",
+            //         "quantity" => 1,
+            //         "price" => 25,
+            //         "vat" => 0) 
+            // );
             $elems = $elem->getElementsByTagName('items');
             if($elems->length == 1)
             {
@@ -210,6 +227,7 @@
                 $xmlInvElem->appendChild($xmlElem);
             }
 
+            
             if(($this->billingAddress instanceof MobilpayPaymentAddress) || ($this->shippingAddress instanceof MobilpayPaymentAddress))
             {
                 $xmlAddr = null;
@@ -251,7 +269,16 @@
                 }
             }
 
-            if(is_array($this->items) && sizeof($this->items) > 0)
+            // By Navid 
+            // if($this->items != null)
+            // {
+            //     $xmlAttr			= $xmlDoc->createElement('items');
+            //     $xmlAttr->nodeValue = 'TES TES TEST';
+            //     $xmlInvElem->appendChild($xmlAttr);
+            // }
+
+            // if(is_array($this->items) && sizeof($this->items) > 0)
+            if($this->items != null)
             {
                 $xmlItems = null;
                 foreach ($this->items as $item)
@@ -315,7 +342,7 @@
         public function setBillingAddress(MobilpayPaymentAddress $address)
         {
             $this->billingAddress = $address;
-
+            
             return $this;
         }
 
@@ -336,6 +363,7 @@
             return $this->shippingAddress;
         }
 
+
         public function addHeadItem(MobilpayPaymentInvoiceItem $item)
         {
             array_unshift($this->items, $item);
@@ -344,6 +372,7 @@
         }
 
         public function addTailItem(MobilpayPaymentInvoiceItem $item)
+        // public function addTailItem($item)
         {
             array_push($this->items, $item);
 
@@ -382,5 +411,14 @@
         public function removeTailExchangeRate()
         {
             return array_pop($this->exchangeRates);
+        }
+
+        public function setLog($log) {
+            $logPoint = date(" - H:i:s - ").rand(1,1000)."\n";
+            ob_start();                    // start buffer capture
+            print_r( $log );           // dump the values
+            $contents = ob_get_contents(); // put the buffer into a variable
+            ob_end_clean();
+               file_put_contents('/var/www/html/var/log/netopiaLog.log', "----||MobilPayInvoice||-----\n $logPoint --------Start-------\n".$contents."--------- END ------- \n".$logPoint."----------------\n", FILE_APPEND | LOCK_EX);
         }
     }

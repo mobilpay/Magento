@@ -1,0 +1,41 @@
+<script>
+require([
+    'jquery',
+    'prototype',
+], function(jQuery){
+    function check_ssl_certificate() {
+        console.log('SSL Check - Start');
+        params = {
+        };
+
+        new Ajax.Request('<?php echo $block->getAjaxUrl() ?>', {
+            loaderArea:     false,
+            asynchronous:   true,
+            parameters:     params,
+            onSuccess: function(transport) {
+                response = JSON.parse(transport.responseText);
+                // console.log(transport);
+                var resultText = '';
+                    if (transport.status > 200) {
+                        resultText = transport.statusText;
+                    } else {
+                        resultText = response.msg;
+                    }
+                    jQuery('#ssl_message').text(resultText);
+            }
+        });
+        console.log(response);
+        console.log('----------------------------------------');
+        console.log('SSL Check - End');
+    }
+
+    jQuery('#ssl_verify_button').click(function () {
+        check_ssl_certificate ();
+    });
+});
+</script>
+<?php 
+    // $controller = $block->getCustomUrl();
+    echo $block->getButtonHtml();
+?>
+<span id="ssl_message" style="padding-left: 10px; font-weight: bold;"></span>

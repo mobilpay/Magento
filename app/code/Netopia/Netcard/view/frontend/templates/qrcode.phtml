@@ -2,14 +2,14 @@
     /* @var Netopia\Netcard\Block\Qrcode $block */
     $quote = $block->getQuote();
     $qrcodeDta = $block->getQrcodeData();
-    $platform = $block->getConfigData('mode/is_live') ? 3 : 4;
+    $platform = $block->getConfigData('api/is_live') ? 3 : 4;
     
     if($qrcodeDta->errors->code === "0") {
        ?>
         <div class="" >
             <img src="https://suport.mobilpay.ro/np-logo-blue.svg" width="134" alt="Netopia Payment>"/>
             <h1 class="">
-                <span class="" ><?= __('Please, scan the "Qr Code" with your Mobilpay WALLET') ?></span>
+                <span class="" ><?= __('Please, scan the "Qr Code" with your mobilPay WALLET') ?></span>
             </h1>
         </div>
         <?php
@@ -18,7 +18,7 @@
             
                 <div class="" id="orderId"  data-order=<?php echo $qrcodeDta->order->id ?>>
                     <img    src="https://secure.mobilpay.ro/default/index/qr/id/<?=$qrcodeDta->transaction->id;?>/type/<?=$platform;?>"
-                            alt="Qrcode mobilpay WALLET"
+                            alt="Qrcode mobilPay WALLET"
                             width="200" height="200">
                 </div>
                 <div class="title">
@@ -68,14 +68,13 @@
             <?php
         }
     } else {
+        $msg = (isset($qrcodeDta->errors->message) && !is_null($qrcodeDta->errors->message)) ? $qrcodeDta->errors->message : ""; 
         echo '<div class="">
                     <img src="https://suport.mobilpay.ro/np-logo-blue.svg" width="134" alt="Netopia Payment>"/>
                     <h1 class="">
                         <span class="" >OOPS, something is wrong!!</span>
                     </h1>
+                    <p>'.$msg.'</p>
               </div>';
     }
-
-
-
 ?>

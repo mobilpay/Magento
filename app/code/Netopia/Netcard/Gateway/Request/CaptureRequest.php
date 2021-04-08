@@ -55,11 +55,11 @@ class CaptureRequest implements BuilderInterface
             'TXN_TYPE' => 'S',
             'TXN_ID' => $payment->getLastTransId(),
             'SIGNATURE' => $this->config->getValue(
-                'auth/signature',
+                'api/signature',
                 $order->getStoreId()
             ),
             'MERCHANT_KEY' => $this->config->getValue(
-                'auth/signature',
+                'api/signature',
                 $order->getStoreId()
             )
         ];

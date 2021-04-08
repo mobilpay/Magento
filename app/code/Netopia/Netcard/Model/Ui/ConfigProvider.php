@@ -19,7 +19,7 @@ final class ConfigProvider implements ConfigProviderInterface
    /**
    * Netopia QR code path
    */
-   const QR_CODE_PATH = 'payment/net_card/api/qr_payment';
+   const QR_CODE_PATH = 'payment/net_card/auth/qr_payment';
    const NET_CARD_DESCRIPTION = 'payment/net_card/description';
 
    public function __construct(\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig)

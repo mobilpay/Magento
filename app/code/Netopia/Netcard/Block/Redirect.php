@@ -15,6 +15,7 @@ use Magento\Framework\App\ObjectManager;
 use Netopia\Netcard\Mobilpay\Payment\MobilpayPaymentInvoice;
 use Netopia\Netcard\Mobilpay\Payment\Request\MobilpayPaymentRequestCard;
 use Netopia\Netcard\Mobilpay\Payment\MobilpayPaymentAddress;
+use Netopia\Netcard\Mobilpay\Payment\MobilpayPaymentInvoiceItem;
 use Magento\Framework\Module\Dir;
 
 /**
@@ -31,6 +32,7 @@ class Redirect extends Template
     protected $_resource;
     protected $_moduleReader;
     Protected $quoteFactory;
+    protected $orderRepository;
 
     /**
      * @var MobilpayPaymentRequestCard
@@ -40,6 +42,11 @@ class Redirect extends Template
      * @var MobilpayPaymentInvoice
      */
     Protected $mobilpayPaymentInvoice;
+    /**
+     * @var MobilpayPaymentInvoiceItem
+     */
+    Protected $mobilpayPaymentInvoiceItem;
+    /**
     /**
      * @var Payment\MobilpayPaymentAddress
      */
@@ -63,6 +70,7 @@ class Redirect extends Template
                                 Order $orderFactory,
                                 QuoteFactory $quoteFactory,
                                 Reader $reader,
+                                \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
                                 array $data)
     {
         $this->_resource = $resource;
@@ -70,6 +78,7 @@ class Redirect extends Template
         $this->_orderFactory = $orderFactory;
         $this->quoteFactory = $quoteFactory;
         $this->_moduleReader = $reader;
+        $this->orderRepository = $orderRepository;
         parent::__construct($context, $data);
     }
 
@@ -116,11 +125,11 @@ class Redirect extends Template
 
         try {
             $objPmReqCard = new MobilpayPaymentRequestCard();
-            $objPmReqCard->signature = $this->getConfigData('auth/signature');
+            $objPmReqCard->signature = $this->getConfigData('api/signature');
 
             // Get Public Key filename
-            $mode = $this->getConfigData('mode/is_live') ? "live." : "sandbox.";
-            if($this->getConfigData('mode/is_live')) {
+            $mode = $this->getConfigData('api/is_live') ? "live." : "sandbox.";
+            if($this->getConfigData('api/is_live')) {
                 $livePublicKey = $this->getConfigData('mode/live_public_key');
                 if(!is_null($livePublicKey) && file_exists($filePath.$livePublicKey)){
                     $x509FilePath = $filePath.$livePublicKey;
@@ -136,9 +145,10 @@ class Redirect extends Template
                 }
             }
 
-
+            
             $objPmReqCard->orderId = $this->getOrder()->getId();
             $objPmReqCard->returnUrl = $this->getUrl('netopia/payment/success');
+            // $objPmReqCard->returnUrl = $this->getUrl('checkout/onepage/success');
             $objPmReqCard->confirmUrl = $this->getUrl('netopia/payment/ipn');
 
 
@@ -155,6 +165,35 @@ class Redirect extends Template
                 $objPmReqCard->invoice->details = "Netopia - Magento 2 - Default description";
             }
 
+            /*
+            * Add Items to OBJ - Start
+            */ 
+            
+            // $items = new MobilpayPaymentInvoiceItem();
+            // die($this->setLog($itemDetail));
+            
+            $orderedItems = $this->orderRepository->get($objPmReqCard->orderId);
+            $items = $orderedItems->getAllItems();
+            // die($this->setLog($items));
+
+            foreach ($items as $item) {
+                $itemDetail = new MobilpayPaymentInvoiceItem();
+                $itemDetail->code = $item->getSku();
+                $itemDetail->name = $item->getName();
+                $itemDetail->quantity = (int) $item->getQtyOrdered();
+                $itemDetail->price = $item->getPrice();
+                // $itemDetail->measurment = 'Buc'; // Static for Test
+                // $itemDetail->vat = 1;  // Static for Test
+                // $objPmReqCard->invoice->addTailItem($itemDetail); // to send Items in XML request
+            }
+
+            
+            // echo "<hr>";
+            // print_r($objPmReqCard->orderId);
+            // echo "<hr>";
+            // echo "Aici BLOCK";
+            // echo "<hr>";
+            
             // Add billing address info to Obj
             $billingAddress = new MobilpayPaymentAddress();
             $company = $billing->getCompany();
@@ -175,6 +214,12 @@ class Redirect extends Template
             $billingAddress->mobilePhone = $billing->getTelephone();
 
             $objPmReqCard->invoice->setBillingAddress($billingAddress);
+
+            // echo "<pre>";
+            // print_r($objPmReqCard);
+            // $this->setLog($objPmReqCard);
+            // echo "<pre>";
+            // die('Test XML ');
 
             $objPmReqCard->encrypt($x509FilePath);
         } catch (\Exception $e) {
@@ -204,6 +249,10 @@ class Redirect extends Template
 
     public function setLog($log) {
         $logPoint = date(" - H:i:s - ").rand(1,1000)."\n";
-        file_put_contents('/var/www/html/var/log/netopiaLog.log', $log.' <<< Redarect >>> '.$logPoint, FILE_APPEND | LOCK_EX);
+        ob_start();                    // start buffer capture
+        print_r( $log );           // dump the values
+        $contents = ob_get_contents(); // put the buffer into a variable
+        ob_end_clean();
+           file_put_contents('/var/www/html/var/log/netopiaLog.log', "----||Redirect||-----\n $logPoint --------Start-------\n".$contents."--------- END ------- \n".$logPoint."----------------\n", FILE_APPEND | LOCK_EX);
     }
 }

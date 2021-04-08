@@ -16,23 +16,32 @@
             $msg = "Your order is in processing!";
             break;
         case 'fraud':
-            $msg = "Your order will not be processed!!!";
-            break;                    
+            $msg = "Your order will not be processed!";
+            break; 
+        case 'pending_payment':
+            $msg = 'You order is not paied';
+            break;
         default:
-            $msg = "your order status is in ".$orderData['status'];
+            $msg = "your status order is ".$orderData['status'];
             break;
     }
 
 ?>
 <div class="page-title-wrapper">
     <img src="https://suport.mobilpay.ro/np-logo-blue.svg" width="134" alt="Netopia Payment>"/>
+    <h3>
+        <span class=""><?=$block->escapeHtml(__('Dear')); ?> <?= $orderData->getData('customer_firstname');?></span>,
+        <span class=""><?= $orderData->getData('customer_lastname');?></span>
+    </h3>
     <h1 class="page-title">
         <span class="base" data-ui-id="page-title-wrapper"><?php echo $msg; ?></span>
     </h1>
 </div>
+
+
 <div class="checkout-success">
     <?php 
-        if (!in_array($orderData['status'], array("canceled", "fraud"))) {
+        if (in_array($orderData['status'], array("complete", "payment_review", "processing" ))) {
             ?>
             <p><?=$block->escapeHtml(__('Your order number'));?> : <strong><?php echo $block->getOrderId();?></strong></p>
             <p><?=$block->escapeHtml(__('Your total paid amount'));?> : <strong><?php echo $orderData->getData('base_grand_total');?></strong></p>
@@ -50,7 +59,36 @@
                 </div>
             </div>
             <?php
+        } elseif($orderData['status'] == "pending_payment") {
+            ?>
+            <p><?=$block->escapeHtml(__('Your refrence number'));?> : <strong><?php echo $block->getOrderId();?></strong></p>
+            <p><?=$block->escapeHtml(__('You can call the support, by giving reference number'));?></p>
+            <?php
         }
     ?>
-    
+            
+</div>
+
+
+<div id="registration" data-bind="scope:'registration'">
+    <br>
+    <!-- ko template: getTemplate() -->
+    <!-- ko foreach: getRegion('messages') -->
+    <!-- ko template: getTemplate() -->
+    <div data-role="checkout-messages" class="messages" data-bind="visible: isVisible(), click: removeAll">
+        <!-- ko foreach: messageContainer.getErrorMessages() --><!--/ko-->
+        <!-- ko foreach: messageContainer.getSuccessMessages() --><!--/ko-->
+    </div>
+    <!-- /ko -->
+    <!--/ko-->
+    <div>
+        <!-- ko if: isFormVisible -->
+        <p data-bind="i18n: 'You can track your order status by creating an account.'">You can track your order status by creating an account.</p>
+        <p><span data-bind="i18n: 'Email Address'">Email Address</span>: <span data-bind="text: getEmailAddress()"><?php echo $orderData->getData('customer_email');?></span></p>
+        <a class="action primary" data-bind="attr: { href: getUrl() }" href="<?php /* @escapeNotVerified */ echo $block->getUrl() ?>checkout/account/delegateCreate/">
+            <span data-bind="i18n: 'Create an Account'">Create an Account</span>
+        </a>
+        <!--/ko-->
+    </div>
+    <!-- /ko -->
 </div>

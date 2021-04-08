@@ -51,11 +51,11 @@ class AuthorizationRequest implements BuilderInterface
             'CURRENCY' => $order->getCurrencyCode(),
             'EMAIL' => $address->getEmail(),
             'SIGNATURE' => $this->config->getValue(
-                'auth/signature',
+                'api/signature',
                 $order->getStoreId()
             ),
             'MERCHANT_KEY' => $this->config->getValue(
-                'auth/signature',
+                'api/signature',
                 $order->getStoreId()
             )
         ];

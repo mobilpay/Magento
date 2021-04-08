@@ -100,12 +100,13 @@ class Ipn extends Action implements CsrfAwareActionInterface {
 
     
     public function setLog($log) {
-     $logPoint = date(" - H:i:s - ").rand(1,1000)."\n";
+     $logPoint = "-----------".date(" - H:i:s - ").rand(1,1000)." ----------- \n";
      ob_start();                    // start buffer capture
+     echo $logPoint;
      var_dump( $log );           // dump the values
      $contents = ob_get_contents(); // put the buffer into a variable
      ob_end_clean();
-   	 file_put_contents('/var/www/html/var/log/netopiaLog.log', $contents.' ||IPN|| '.$logPoint, FILE_APPEND | LOCK_EX);
+   	 file_put_contents('/var/www/html/var/log/netopiaLog.log', $contents , FILE_APPEND | LOCK_EX);
     }
     
     protected function _processRequestProduct($objPmReq)
@@ -133,6 +134,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         $errorMessage = '';
         $this->_initData($objPmReq);
 
+        $this->setLog(array("ipnAction"=>$objPmReq->objPmNotify->action, "errorCode"=>$objPmReq->objPmNotify->errorCode));
         switch ($objPmReq->objPmNotify->action) {
             case 'confirmed':
                 if ($objPmReq->objPmNotify->errorCode == 0) {
@@ -160,10 +162,8 @@ class Ipn extends Action implements CsrfAwareActionInterface {
                 if ($objPmReq->objPmNotify->errorCode != 0) {
                     $this->_handlePaymentDenial();
                 } else {
-
                     $this->_handleAuthorization(0);
                 }
-
                 break;
 
             case 'canceled':
@@ -223,7 +223,24 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
         $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage. " - payment rejected by NETOPIA Payments - ");
-        $this->_order->setStatus(Order::STATE_PENDING_PAYMENT); // Order status Can be even set as STATE_CANCELED
+        
+        /*
+         * Change Order Status on Refuse from Platform
+         */
+        switch($this->getConfigData('custom/custom_payment_cancel')){
+            case 'STATE_CANCELED':
+                $suitableStatus = Order::STATE_CANCELED;
+            break;
+            case 'STATE_CLOSED':
+                $suitableStatus = Order::STATE_CLOSED;
+            break;
+            case 'STATE_HOLDED':
+                $suitableStatus = Order::STATE_HOLDED;
+            break;
+            default:
+                $suitableStatus = Order::STATE_CANCELED;
+        }
+        $this->_order->setStatus($suitableStatus);
         $this->_order->save();
     }
 
@@ -338,7 +355,26 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
         $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " - reviewing by NETOPIA Payments  - ");
-        $this->_order->setStatus(Order::STATE_PAYMENT_REVIEW);
+        /*
+         * Change Order Status on Anti-fraud check
+         */
+        switch($this->getConfigData('custom/custom_payment_fraud')){
+            case 'STATE_PAYMENT_REVIEW':
+                $suitableStatus = Order::STATE_PAYMENT_REVIEW;
+            break;
+            case 'STATE_PROCESSING':
+                $suitableStatus = Order::STATE_PROCESSING;
+            break;
+            case 'STATE_CLOSED':
+                $suitableStatus = Order::STATE_CLOSED;
+            break;
+            case 'STATE_HOLDED':
+                $suitableStatus = Order::STATE_HOLDED;
+            break;
+            default:
+                $suitableStatus = Order::STATE_PAYMENT_REVIEW;
+        }
+        $this->_order->setStatus($suitableStatus);
         $this->_order->save();
 
     }
@@ -372,7 +408,25 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE);
         $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " - Accepted by NETOPIA Payments - ");
-        $this->_order->setStatus(Order::STATE_PROCESSING);
+        
+        /*
+         * Change Order Status on Accept from Platform
+         */
+        switch($this->getConfigData('custom/custom_payment_complit')){
+            case 'STATE_PROCESSING':
+                $suitableStatus = Order::STATE_PROCESSING;
+            break;
+            case 'STATE_COMPLETE':
+                $suitableStatus = Order::STATE_COMPLETE;
+            break;
+            case 'STATE_CLOSED':
+                $suitableStatus = Order::STATE_CLOSED;
+            break;
+            default:  
+                $suitableStatus = Order::STATE_PROCESSING;
+        }
+        // $this->_order->setStatus(Order::STATE_PROCESSING);
+        $this->_order->setStatus($suitableStatus);
         $this->_order->save();
     }
 
@@ -398,14 +452,14 @@ class Ipn extends Action implements CsrfAwareActionInterface {
                     if(!is_null($sandboxPrivateKey) && file_exists($path.$sandboxPrivateKey)){
                         $privateKeyFilePath = $path . $sandboxPrivateKey;
                     }else{
-                        $privateKeyFilePath = $path . "sandbox.".$this->getConfigData('auth/signature')."private.key";
+                        $privateKeyFilePath = $path . "sandbox.".$this->getConfigData('api/signature')."private.key";
                     }
                 }else {
                     $livePrivateKey = $this->getConfigData('mode/live_private_key');
                     if(!is_null($livePrivateKey) && file_exists($path.$livePrivateKey)) {
                         $privateKeyFilePath = $path . $livePrivateKey;
                     }else {
-                        $privateKeyFilePath = $path . "live.".$this->getConfigData('auth/signature')."private.key";
+                        $privateKeyFilePath = $path . "live.".$this->getConfigData('api/signature')."private.key";
                     }
                 }
 

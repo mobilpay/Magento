@@ -4,8 +4,8 @@ namespace Netopia\Netcard\Model\Config\Backend;
  
 class CustomFileType extends \Magento\Config\Model\Config\Backend\File
 {
-	protected $uploadDir; // upload Folder for certificates
-    
+    protected $uploadDir; // upload Folder for certificates
+        
 	/**
      * Overwirte Method - Save uploaded file before saving config value
      *
@@ -54,7 +54,10 @@ class CustomFileType extends \Magento\Config\Model\Config\Backend\File
 
 	protected function _getUploadDir()
     {
-        $this->uploadDir = getcwd().DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'code'.DIRECTORY_SEPARATOR.'Netopia'.DIRECTORY_SEPARATOR.'Netcard'.DIRECTORY_SEPARATOR.'etc'.DIRECTORY_SEPARATOR.'certificates'.DIRECTORY_SEPARATOR;
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $dir = $objectManager->get('Magento\Framework\Module\Dir');
+        $this->uploadDir = $dir->getDir('Netopia_Netcard').DIRECTORY_SEPARATOR.'etc'.DIRECTORY_SEPARATOR.'certificates'.DIRECTORY_SEPARATOR;
+        // $this->uploadDir = getcwd().DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'code'.DIRECTORY_SEPARATOR.'Netopia'.DIRECTORY_SEPARATOR.'Netcard'.DIRECTORY_SEPARATOR.'etc'.DIRECTORY_SEPARATOR.'certificates'.DIRECTORY_SEPARATOR;
         return $this->uploadDir;
     }
 

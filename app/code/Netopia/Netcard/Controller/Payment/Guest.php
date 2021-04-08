@@ -8,7 +8,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Sales\Model\Order;
 
-class Success extends Action
+class Guest extends Action
 {
     /**
      * @var PageFactory
@@ -48,42 +48,32 @@ class Success extends Action
      */
     public function execute()
     {
+        
         $resultPage = $this->resultPageFactory->create();
         $orderId = $this->_request->getParam('orderId');
+        $code = $this->_request->getParam('code');
         $order = $this->_orderFactory->load($orderId);
+
+
+        if(md5($order->getCustomerEmail()) != $code){
+            $msg = 'Oops, access denied';
+            $this->messageManager->addError($msg);
+            return $this->resultRedirectFactory->create()->setPath('checkout/cart');
+        }
+
+        if(!$order->getCustomerIsGuest()){
+            $msg = 'You already have account. To get any information, first loggin to your account';
+            $this->messageManager->addError($msg);
+            return $this->resultRedirectFactory->create()->setPath('checkout/cart');
+        }
 
 
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $customerSession = $objectManager->get('Magento\Customer\Model\Session');
         if($customerSession->isLoggedIn()) {
-            if($customerSession->getCustomer()->getEmail() != $order->getCustomerEmail()){
-                $msg = 'Oops, thee order is not for you';
-                $this->messageManager->addError($msg);
-                return $this->resultRedirectFactory->create()->setPath('checkout/cart');
-            }
-
-            if(!$order || ($order->getStatus()== NULL) ){
-                return $this->resultRedirectFactory->create()->setPath('checkout/cart');
-            }else{
-                if($order->getStatus()==Order::STATE_PENDING_PAYMENT) {
-                    $msg = 'The Order is not paied';
-                    $this->messageManager->addError($msg);
-                    return $this->resultRedirectFactory->create()->setPath('checkout/cart');
-                }elseif($order->getStatus()==Order::STATE_CANCELED || $order->getStatus()==Order::STATE_PAYMENT_REVIEW){
-                    // $msg = current($order->getAllStatusHistory())->getComment();
-                    // $this->messageManager->addError($msg);
-                    // return $this->resultRedirectFactory->create()->setPath('checkout/cart');
-                }
-            }
-
-        }else{
-            if($customerSession->getCustomer()->getEmail() != $order->getCustomerEmail()){
-                $cryptedMail = md5($order->getCustomerEmail());
-                return $this->resultRedirectFactory->create()->setPath('netopia/payment/guest?&code='.$cryptedMail.'&orderId='.$order->getEntityId());
-            }
+            return $this->resultRedirectFactory->create()->setPath('netopia/payment/success/?&orderId='.$orderId);
         }
-
-        
+   
 
         if ($order->getCanSendNewEmailFlag()) { 
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -95,6 +85,7 @@ class Success extends Action
             'checkout_onepage_controller_success_action',
             ['order_ids' => [$orderId]]
         );
+        
         return $resultPage;
     }
 }
