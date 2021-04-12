@@ -36,7 +36,7 @@ Recommended to firstly, go to Admin panel & fill the necessary data
     * **Certificate Configuration** : To uploade / remove the public & private keys for Live & Sandbox
     * **Custom configuration** : To set order status regarding the payment status, recommanded to use Defulte one 
     * **mobilPay WALLET Configuration** : To set mobilPay WALLET setting
-    * **Conditions / Agreements** : To declare de agreements with NETOPIA Payments and send the agreement to NETOPIA Payments.
+    * **Conditions / Agreements** : To declare the agreements with NETOPIA Payments and send the agreement to NETOPIA Payments.
         * before send the agreements, make sure you already uploaded the keys & save the setting & agreements.
         
     Note : The fileds are not complited from configuration section, will set by default value, 
