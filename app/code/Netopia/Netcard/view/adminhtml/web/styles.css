@@ -1,0 +1,4 @@
+.netcard-section .netcard-payment-logo {background: url("https://suport.mobilpay.ro/np-logo-blue.svg?width=965")  no-repeat 0 0% / 18rem auto;
+    height: 100px; width: auto; padding-left: 20rem; display:inline-block; vertical-align: middle;}
+.netcard-section .button-container {float: right;}
+.netcard-section .netcard-payment-text { display: inline-block; vertical-align: middle; width: 50%}
