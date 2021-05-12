@@ -172,27 +172,21 @@ class Redirect extends Template
             // $items = new MobilpayPaymentInvoiceItem();
             // die($this->setLog($itemDetail));
             
-            $orderedItems = $this->orderRepository->get($objPmReqCard->orderId);
-            $items = $orderedItems->getAllItems();
+            // $orderedItems = $this->orderRepository->get($objPmReqCard->orderId);
+            // $items = $orderedItems->getAllItems();
             // die($this->setLog($items));
 
-            foreach ($items as $item) {
-                $itemDetail = new MobilpayPaymentInvoiceItem();
-                $itemDetail->code = $item->getSku();
-                $itemDetail->name = $item->getName();
-                $itemDetail->quantity = (int) $item->getQtyOrdered();
-                $itemDetail->price = $item->getPrice();
+            // foreach ($items as $item) {
+                // $itemDetail = new MobilpayPaymentInvoiceItem();
+                // $itemDetail->code = $item->getSku();
+                // $itemDetail->name = $item->getName();
+                // $itemDetail->quantity = (int) $item->getQtyOrdered();
+                // $itemDetail->price = $item->getPrice();
                 // $itemDetail->measurment = 'Buc'; // Static for Test
                 // $itemDetail->vat = 1;  // Static for Test
                 // $objPmReqCard->invoice->addTailItem($itemDetail); // to send Items in XML request
-            }
+            // }
 
-            
-            // echo "<hr>";
-            // print_r($objPmReqCard->orderId);
-            // echo "<hr>";
-            // echo "Aici BLOCK";
-            // echo "<hr>";
             
             // Add billing address info to Obj
             $billingAddress = new MobilpayPaymentAddress();
