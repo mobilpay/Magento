@@ -17,6 +17,7 @@ The Module placed in folder "Netopia"
 4.  **Enable** the module.
     ###### Additional option
     By Enable the **Allow mobilPay WALLET Payment** you will give this option to your clients to pay also via **mobilPay WALLET** by scan a simple **QrCode** 
+    * To use **mobilPay WALLET Payment**, the **Username** and **Password** should be set as your account on **https://admin.mobilpay.ro**
 5. Download your keys from https://admin.mobilpay.ro/ for Live mode and https://sandbox.mobilpay.ro for Sandbox mode.
    Set your Mode at Mode **Configuration** and  Upload the certificates.
    
