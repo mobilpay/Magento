@@ -11,7 +11,7 @@
             <group id="net_card" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <comment><![CDATA[<div class="netcard-payment-logo"></div><div class="netcard-payment-text"><b><a href="https://netopia-payments.com/" target="_blank">Netopia Payment</a></b><br/>
                 NETOPIA Payments îți pune la dispoziție cele mai performante, competitive și inovative soluții de încasare a tranzacțiilor online.<br/>
-                </div>]]></comment>
+                Ușor de integrat cu platforme Magento.</div>]]></comment>
                 <fieldset_css>complex netcard-section</fieldset_css>
                 <frontend_model>Magento\Paypal\Block\Adminhtml\System\Config\Fieldset\Payment</frontend_model>
 
@@ -23,8 +23,9 @@
                     <field id="username" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Username</label>
                     </field>
-                    <field id="password" translate="label" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <field id="password" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
                         <label>Password</label>
+                        <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     </field>
                 </group>
                 <group id="api" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" translate="label">

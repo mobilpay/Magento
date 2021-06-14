@@ -7,19 +7,19 @@
             $msg = "Sorry, Your order is canceled!";
             break;
         case 'complete':
-            $msg = "Your payment has been completed!";
+            $msg = "You are successfully paid!";
             break;
         case 'payment_review':
-            $msg = "Your payment is pending review!";
+            $msg = "Your payment is in review!";
             break;
         case 'processing':
-            $msg = "Your order is being processed!";
+            $msg = "Your order is in processing!";
             break;
         case 'fraud':
             $msg = "Your order will not be processed!!!";
             break;                    
         default:
-            $msg = "A generic error has occured. Please contact us!";
+            $msg = "your order status is in ".$orderData['status'];
             break;
     }
 

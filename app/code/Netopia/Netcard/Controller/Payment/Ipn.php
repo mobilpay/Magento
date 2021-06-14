@@ -183,7 +183,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             default:
                 $errorType = MobilpayPaymentRequestAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
                 $errorCode = MobilpayPaymentRequestAbstract::ERROR_CONFIRM_INVALID_ACTION;
-                $errorMessage = 'mobilpay_refference_action parameter is invalid';
+                $errorMessage = 'mobilpay_refference_action paramaters is invalid';
                 break;
         }
 
@@ -197,10 +197,10 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         if (!$this->_order->canInvoice()) {
             //when order cannot create invoice, need to have some logic to take care
             $this->_order->addStatusToHistory($this->_order->getStatus(), // keep order status/state
-                'Error creating an invoice', $notified = true);
+                'Error in creating an invoice', $notified = true);
         }
 
-        $this->_order->getPayment()->setTransactionId($this->_objPmReq->objPmNotify->purchaseId . $ap);
+        $this->_order->getPayment()->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId) . $ap);
         $this->_order->getPayment()->place();
         $this->_order->save();
     }
@@ -210,20 +210,20 @@ class Ipn extends Action implements CsrfAwareActionInterface {
 
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
-        $payment->setParentTransactionId($this->_objPmReq->objPmNotify->purchaseId );
+        $payment->setParentTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
         $payment->registerVoidNotification();
         $trans = $this->_builderInterface;
         $transaction = $trans->setPayment($payment)
             ->setOrder($this->_order)
-            ->setTransactionId($this->_objPmReq->objPmNotify->purchaseId)
+            ->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))
             ->setAdditionalInformation(
-                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->_objPmReq->objPmNotify->purchaseId)]
+                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))]
             )
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage. " - payment canceled - ");
-        $this->_order->setStatus(Order::STATE_CANCELED); // Order status Can be even set as STATE_CANCELED
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage. " - Tranzactie anulata - ");
+        $this->_order->setStatus(Order::STATE_CANCELED); // Order status Can be even set as STATE_PENDING_PAYMENT
         $this->_order->save();
     }
 
@@ -231,13 +231,13 @@ class Ipn extends Action implements CsrfAwareActionInterface {
     {
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
-        $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId );
+        $payment->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
         $trans = $this->_builderInterface;
         $transaction = $trans->setPayment($payment)
             ->setOrder($this->_order)
-            ->setTransactionId($this->_objPmReq->objPmNotify->purchaseId)
+            ->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))
             ->setAdditionalInformation(
-                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->_objPmReq->objPmNotify->purchaseId)]
+                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))]
             )
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
@@ -267,17 +267,17 @@ class Ipn extends Action implements CsrfAwareActionInterface {
     {
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
-        $payment->setLastTransId($this->_objPmReq->objPmNotify->purchaseId);
-        $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId);
+        $payment->setLastTransId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
+        $payment->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
         $payment->setAdditionalInformation(
-            [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->_objPmReq->objPmNotify->purchaseId)]
+            [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))]
         );
         $trans = $this->_builderInterface;
         $transaction = $trans->setPayment($payment)
             ->setOrder($this->_order)
-            ->setTransactionId($this->_objPmReq->objPmNotify->purchaseId)
+            ->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))
             ->setAdditionalInformation(
-                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->_objPmReq->objPmNotify->purchaseId)]
+                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))]
             )
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
@@ -294,14 +294,14 @@ class Ipn extends Action implements CsrfAwareActionInterface {
     {
         $payment = $this->_order->getPayment();
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
-        $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId );
-        $payment->setParentTransactionId($this->_objPmReq->objPmNotify->purchaseId );
+        $payment->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
+        $payment->setParentTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
         $trans = $this->_builderInterface;
         $transaction = $trans->setPayment($payment)
             ->setOrder($this->_order)
-            ->setTransactionId($this->_objPmReq->objPmNotify->purchaseId)
+            ->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))
             ->setAdditionalInformation(
-                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->_objPmReq->objPmNotify->purchaseId)]
+                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))]
             )
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
@@ -330,14 +330,14 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         $trans = $this->_builderInterface;
         $transaction = $trans->setPayment($payment)
             ->setOrder($this->_order)
-            ->setTransactionId($this->_objPmReq->objPmNotify->purchaseId)
+            ->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))
             ->setAdditionalInformation(
-                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->_objPmReq->objPmNotify->purchaseId)]
+                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))]
             )
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_REFUND);
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage);
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " - tranzactie in curs de verificare - ");
         $this->_order->setStatus(Order::STATE_PAYMENT_REVIEW);
         $this->_order->save();
 
@@ -347,31 +347,31 @@ class Ipn extends Action implements CsrfAwareActionInterface {
     {
         $payment = $this->_order->getPayment();  
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
-        $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId );
+        $payment->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
         $payment->setIsTransactionClosed(0);
         $payment->setIsTransactionPending(false);
         if ($this->_order->getStatus() == Order::STATE_PROCESSING) {
-            $payment->setParentTransactionId($this->_objPmReq->objPmNotify->purchaseId  );
+            $payment->setParentTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
             $payment->registerCaptureNotification($this->_objPmReq->objPmNotify->processedAmount);
             $payment->setAmount($this->_objPmReq->objPmNotify->processedAmount);
 
         } else {
             $payment->setAmount($this->_objPmReq->objPmNotify->processedAmount);
-            $payment->setTransactionId($this->_objPmReq->objPmNotify->purchaseId);
-            $payment->setParentTransactionId($this->_objPmReq->objPmNotify->purchaseId);
+            $payment->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
+            $payment->setParentTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
             $payment->registerCaptureNotification($this->_objPmReq->objPmNotify->processedAmount);
         }
         $trans = $this->_builderInterface;
         $transaction = $trans->setPayment($payment)
             ->setOrder($this->_order)
-            ->setTransactionId($this->_objPmReq->objPmNotify->purchaseId)
+            ->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))
             ->setAdditionalInformation(
-                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->_objPmReq->objPmNotify->purchaseId)]
+                [\Magento\Sales\Model\Order\Payment\Transaction::RAW_DETAILS => array('id'=>$this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId))]
             )
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE);
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage);
+        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " - ");
         $this->_order->setStatus(Order::STATE_COMPLETE);
         $this->_order->save();
     }
@@ -442,6 +442,11 @@ class Ipn extends Action implements CsrfAwareActionInterface {
     {
         $str = 'payment/net_card/'.$field;
         return $this->_scopeConfig->getValue($str);
+    }
+
+    public function getRealOrderId($ntpTransactionId) {
+        $expArr = explode('_T_', $ntpTransactionId);
+        return $expArr[0];
     }
 
 }

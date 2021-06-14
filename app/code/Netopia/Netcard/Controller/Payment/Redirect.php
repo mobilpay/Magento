@@ -65,7 +65,7 @@ class Redirect extends Action {
         $connection = $this->_resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
         $tblSalesOrder = $this->_resource->getTableName('sales_order');
         $tblQuoteIdMask = $this->_resource->getTableName('quote_id_mask');
-        $quoteId = $this->getRequest()->getParam('quote');  // Quote Mask ID
+        $quoteId = $this->getRealQuoteId($this->getRequest()->getParam('quote'));  // Quote Mask ID
 
         /** @var ObjectManager $ */
         $obm = ObjectManager::getInstance();
@@ -77,7 +77,7 @@ class Redirect extends Action {
         /** @var bool $isLoggedIn */
         $isLoggedIn = $context->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
         if ($isLoggedIn) {
-            $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId).' LIMIT 1');
+            $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId).' ORDER BY `entity_id` DESC LIMIT 1');
             return $orderId[0]['entity_id'];
         } else {
             // Guest Checkout
@@ -91,10 +91,14 @@ class Redirect extends Action {
         $tblSalesOrder = $this->_resource->getTableName('sales_order');
         $tblQuoteIdMask = $this->_resource->getTableName('quote_id_mask');
 
-        $getQuoteID = $connection->fetchAll('SELECT quote_id FROM `'.$tblQuoteIdMask.'` WHERE `masked_id`="'.$quoteMaskId.'" LIMIT 1');
+        $getQuoteID = $connection->fetchAll('SELECT quote_id FROM `'.$tblQuoteIdMask.'` WHERE `masked_id`="'.$this->getRealQuoteId($quoteMaskId).'" LIMIT 1');
         $quoteId = $getQuoteID[0]['quote_id'];
-        $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id="'.$quoteId.'" LIMIT 1');
-        return $orderId[0]['entity_id'];
-        
+        $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id="'.$quoteId.'" ORDER BY `entity_id` DESC LIMIT 1');
+        return $orderId[0]['entity_id'];    
+    }
+
+    public function getRealQuoteId($ntpQuoteId) {
+        $expArr = explode('_QT_', $ntpQuoteId);
+        return $expArr[0];
     }
 }

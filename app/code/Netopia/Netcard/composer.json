@@ -1,6 +1,6 @@
 {
     "name": "netopia/netcard",
-    "description": "Integrates NETOPIA Payments in Magento",
+    "description": "Demonstrates integration with payment gateway NETOPIA",
     "require": {
         "php": "~5.5.0|~5.6.0|~7.0.0",
         "magento/module-sales": "100.0.*",

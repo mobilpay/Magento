@@ -78,7 +78,7 @@ class Redirect extends Template
         $connection = $this->_resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
         $tblSalesOrder = $this->_resource->getTableName('sales_order');
         $tblQuoteIdMask = $this->_resource->getTableName('quote_id_mask');
-        $quoteId = $this->getRequest()->getParam('quote');
+        $quoteId = $this->getRealQuoteId($this->getRequest()->getParam('quote'));
 
         /** @var ObjectManager $ */
         $obm = ObjectManager::getInstance();
@@ -90,11 +90,16 @@ class Redirect extends Template
         /** @var bool $isLoggedIn */
         $isLoggedIn = $context->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
         if ($isLoggedIn) {
-            $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId).' LIMIT 1');
+            $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId).' ORDER BY `entity_id` DESC LIMIT 1');
 
+            //return $this->quoteFactory->create()->load($quoteId);
+//            $order = $this->_checkoutSession->getLastRealOrder();
+//            $orderId=$order->getEntityId();
         } else {
-            $orderId = $connection->fetchAll('SELECT `'.$tblSalesOrder.'`.entity_id FROM `'.$tblSalesOrder.'` INNER JOIN `'.$tblQuoteIdMask.'` ON `'.$tblSalesOrder.'`.quote_id=`'.$tblQuoteIdMask.'`.quote_id AND `'.$tblQuoteIdMask.'`.masked_id='.$connection->quote($quoteId));
-           }
+            $orderId = $connection->fetchAll('SELECT `'.$tblSalesOrder.'`.entity_id FROM `'.$tblSalesOrder.'` INNER JOIN `'.$tblQuoteIdMask.'` ON `'.$tblSalesOrder.'`.quote_id=`'.$tblQuoteIdMask.'`.quote_id AND `'.$tblQuoteIdMask.'`.masked_id='.$connection->quote($quoteId).'  ORDER BY entity_id DESC LIMIT 1');
+           // Mage::app()->getFrontController()->getResponse()->setRedirect(Mage::getUrl('customer/account'));
+        }
+        //print_r($this->_orderFactory->loadByAttribute('entity_id',$orderId));
         return $this->_orderFactory->loadByAttribute('entity_id',$orderId);
     }
 
@@ -133,6 +138,11 @@ class Redirect extends Template
 
 
             $objPmReqCard->orderId = $this->getOrder()->getId();
+            /**
+             * Add timestamp to OrderId
+             */
+            $objPmReqCard->orderId = $objPmReqCard->orderId.'_T_'.time();
+            
             $objPmReqCard->returnUrl = $this->getUrl('netopia/payment/success');
             $objPmReqCard->confirmUrl = $this->getUrl('netopia/payment/ipn');
 
@@ -200,5 +210,10 @@ class Redirect extends Template
     public function setLog($log) {
         $logPoint = date(" - H:i:s - ").rand(1,1000)."\n";
         file_put_contents('/var/www/html/var/log/netopiaLog.log', $log.' <<< Redarect >>> '.$logPoint, FILE_APPEND | LOCK_EX);
+    }
+
+    public function getRealQuoteId($ntpQuoteId) {
+        $expArr = explode('_QT_', $ntpQuoteId);
+        return $expArr[0];
     }
 }

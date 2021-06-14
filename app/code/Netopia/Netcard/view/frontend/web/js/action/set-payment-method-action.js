@@ -20,10 +20,10 @@ define(
                 } else if($('#cardPayment').is(':checked')) 
                 {
                     console.log('cardPayment is checked');
-                    $.mage.redirect('../netopia/payment/redirect/quote/' + quote.getQuoteId()); // Redirect to SANDBOX 
+                    $.mage.redirect('../netopia/payment/redirect/quote/' + quote.getQuoteId() + '_QT_' + Date.now()); // Redirect to SANDBOX 
                 } else
                 {
-                    console.log('Some other method is selected as default');
+                    console.log('Someother Method is selected as defulte');
                 }         
             
         };
