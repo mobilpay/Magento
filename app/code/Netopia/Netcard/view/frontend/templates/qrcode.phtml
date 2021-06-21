@@ -44,18 +44,18 @@
                     xmlhttp.onreadystatechange = function() {
                        if (this.readyState == 4 && this.status == 200) {
                             if (this.responseText == "complete") {
-                                document.getElementById("orderStatus").innerHTML = "is completed successfully";
+                                document.getElementById("orderStatus").innerHTML = "este finalizata cu succes";
                                 document.getElementById("orderSummery").style.display = "block";
                                 document.getElementById("continueShopping").style.display = "block";
                             }else if (this.responseText == "canceled"){
-                                document.getElementById("orderStatus").innerHTML = "is canceled";
+                                document.getElementById("orderStatus").innerHTML = "este anulata";
                                 document.getElementById("continueShopping").style.display = "block";
                             }else if (this.responseText == "payment_review"){
-                                document.getElementById("orderStatus").innerHTML = "is in payment review";
+                                document.getElementById("orderStatus").innerHTML = "este in curs de procesare";
                             }else if (this.responseText == "fraud"){
-                                document.getElementById("orderStatus").innerHTML = "will not be processed!!!";
+                                document.getElementById("orderStatus").innerHTML = "nu va fi procesata";
                             }else if (this.responseText == "processing"){
-                                document.getElementById("orderStatus").innerHTML = "Is in processing.(Scan the Qrcode to pay)";
+                                document.getElementById("orderStatus").innerHTML = "se proceseaza.(Scanati codul QR)";
                             }
                         }
                     };
@@ -72,7 +72,7 @@
         echo '<div class="">
                     <img src="https://suport.mobilpay.ro/np-logo-blue.svg" width="134" alt="Netopia Payment>"/>
                     <h1 class="">
-                        <span class="" >OOPS, something is wrong!!</span>
+                        <span class="" >A aparut o eroare</span>
                     </h1>
                     <p>'.$msg.'</p>
               </div>';

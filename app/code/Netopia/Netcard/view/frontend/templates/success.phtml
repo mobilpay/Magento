@@ -4,22 +4,22 @@
     $orderData = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($block->getOrderId());
     switch ($orderData['status']) {
         case 'canceled':
-            $msg = "Sorry, Your order is canceled!";
+            $msg = "Plata a fost anulata";
             break;
         case 'complete':
-            $msg = "You are successfully paid!";
+            $msg = "Plata a fost finalizata cu succes";
             break;
         case 'payment_review':
-            $msg = "Your payment is in review!";
+            $msg = "Plata este in curs de procesare";
             break;
         case 'processing':
-            $msg = "Your order is in processing!";
+            $msg = "Plata este in curs de procesare";
             break;
         case 'fraud':
-            $msg = "Your order will not be processed!!!";
+            $msg = "Plata este anulata";
             break;                    
         default:
-            $msg = "your order status is in ".$orderData['status'];
+            $msg = "Plata este in ".$orderData['status'];
             break;
     }
 

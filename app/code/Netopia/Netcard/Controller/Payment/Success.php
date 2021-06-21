@@ -67,7 +67,7 @@ class Success extends Action
         $customerSession = $objectManager->get('Magento\Customer\Model\Session');
         if($customerSession->isLoggedIn()) {
             if($customerSession->getCustomer()->getEmail() != $order->getCustomerEmail()){
-                $msg = _('Oops, the order is not for you');
+                $msg = _('Eroare, accesul nu este permis');
                 $this->messageManager->addError($msg);
                 return $this->resultRedirectFactory->create()->setPath('checkout/cart');
             }
@@ -92,7 +92,7 @@ class Success extends Action
                         // $_checkoutSession->replaceQuote($quote);
 
                         $payment = $order->getPayment();
-                        $payment->setPreparedMessage('User rejected payment & back to shoping');
+                        $payment->setPreparedMessage('Plata respinsa, clientul s-a intors in site');
                         $payment->setIsTransactionDenied(true);
                         $payment->getAdditionalInformation();
                         $payment->registerVoidNotification();

@@ -80,7 +80,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         $objPmReq = $this->_processRequest();
 
         if(!$objPmReq) { 
-           die('Please post your data');
+           die('Nu au fost trimise date');
         }
 
         try
@@ -197,7 +197,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         if (!$this->_order->canInvoice()) {
             //when order cannot create invoice, need to have some logic to take care
             $this->_order->addStatusToHistory($this->_order->getStatus(), // keep order status/state
-                'Error in creating an invoice', $notified = true);
+                'Eroare la crearea facturii', $notified = true);
         }
 
         $this->_order->getPayment()->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId) . $ap);

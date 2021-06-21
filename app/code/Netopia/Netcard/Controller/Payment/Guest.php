@@ -58,7 +58,7 @@ class Guest extends Action
          * To manage Reject Payment on Guest User
          */
         if($order->getStatus()==Order::STATE_PENDING_PAYMENT) {
-            $msg = 'The order is not paid!';
+            $msg  = 'Plata nu a fost finalizata!';
             $msg .= " | ".current($order->getAllStatusHistory())->getComment();
             $this->messageManager->addError($msg);
 
@@ -75,7 +75,7 @@ class Guest extends Action
 
                 // We cancel this Order - Start
                 $payment = $order->getPayment();
-                $payment->setPreparedMessage('Guest user rejected payment & back to shoping');
+                $payment->setPreparedMessage('Plata respinsa, clientul s-a intors in site');
                 $payment->setIsTransactionDenied(true);
                 $payment->getAdditionalInformation();
                 $payment->registerVoidNotification();
@@ -92,13 +92,13 @@ class Guest extends Action
         }
 
         if(md5($order->getCustomerEmail()) != $code){
-            $msg = 'Oops, access denied';
+            $msg = 'Eroare, accesul nu este permis';
             $this->messageManager->addError($msg);
             return $this->resultRedirectFactory->create()->setPath('checkout/cart');
         }
 
         if(!$order->getCustomerIsGuest()){
-            $msg = 'You already have account. To get any information, first loggin to your account';
+            $msg = 'Ai deja un cont. Pentru detalii trebuie sa te autentifici';
             $this->messageManager->addError($msg);
             return $this->resultRedirectFactory->create()->setPath('checkout/cart');
         }

@@ -46,7 +46,7 @@ class Status extends Action {
             $status = $order->getStatus();
             echo $status;
         }else{
-            echo "access_denied";
+            echo "Eroare, accesul nu este permis";
         }    
     }
 }
