@@ -207,10 +207,6 @@ class Redirect extends Template
         return $this->_scopeConfig->getValue($str);
     }
 
-    public function setLog($log) {
-        $logPoint = date(" - H:i:s - ").rand(1,1000)."\n";
-        file_put_contents('/var/www/html/var/log/netopiaLog.log', $log.' <<< Redarect >>> '.$logPoint, FILE_APPEND | LOCK_EX);
-    }
 
     public function getRealQuoteId($ntpQuoteId) {
         $expArr = explode('_QT_', $ntpQuoteId);

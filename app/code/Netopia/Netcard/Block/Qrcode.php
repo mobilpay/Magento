@@ -195,11 +195,4 @@ class Qrcode extends Template
         $str = 'payment/net_card/'.$field;
         return $this->_scopeConfig->getValue($str);
     }
-
-    public function setLog($log) {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $directory = $objectManager->get('\Magento\Framework\Filesystem\DirectoryList');
-        $logPoint = date(" - H:i:s - ").rand(1,1000)."\n";
-        file_put_contents($directory->getRoot().'/var/log/netopiaLog.log', $log.' >>> Qr Code <<< '.$logPoint, FILE_APPEND | LOCK_EX);
-    }
 }

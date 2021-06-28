@@ -99,15 +99,6 @@ class Ipn extends Action implements CsrfAwareActionInterface {
     }
 
     
-    public function setLog($log) {
-     $logPoint = date(" - H:i:s - ").rand(1,1000)."\n";
-     ob_start();                    // start buffer capture
-     var_dump( $log );           // dump the values
-     $contents = ob_get_contents(); // put the buffer into a variable
-     ob_end_clean();
-   	 file_put_contents('/var/www/html/var/log/netopiaLog.log', $contents.' ||IPN|| '.$logPoint, FILE_APPEND | LOCK_EX);
-    }
-    
     protected function _processRequestProduct($objPmReq)
     {
         header('Content-type: application/xml');
