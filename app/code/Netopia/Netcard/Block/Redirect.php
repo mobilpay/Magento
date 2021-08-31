@@ -91,15 +91,9 @@ class Redirect extends Template
         $isLoggedIn = $context->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
         if ($isLoggedIn) {
             $orderId = $connection->fetchAll('SELECT entity_id FROM `'.$tblSalesOrder.'` WHERE quote_id='.$connection->quote($quoteId).' ORDER BY `entity_id` DESC LIMIT 1');
-
-            //return $this->quoteFactory->create()->load($quoteId);
-//            $order = $this->_checkoutSession->getLastRealOrder();
-//            $orderId=$order->getEntityId();
         } else {
             $orderId = $connection->fetchAll('SELECT `'.$tblSalesOrder.'`.entity_id FROM `'.$tblSalesOrder.'` INNER JOIN `'.$tblQuoteIdMask.'` ON `'.$tblSalesOrder.'`.quote_id=`'.$tblQuoteIdMask.'`.quote_id AND `'.$tblQuoteIdMask.'`.masked_id='.$connection->quote($quoteId).'  ORDER BY entity_id DESC LIMIT 1');
-           // Mage::app()->getFrontController()->getResponse()->setRedirect(Mage::getUrl('customer/account'));
         }
-        //print_r($this->_orderFactory->loadByAttribute('entity_id',$orderId));
         return $this->_orderFactory->loadByAttribute('entity_id',$orderId);
     }
 

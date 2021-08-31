@@ -107,7 +107,6 @@ class Qrcode extends Template
             $orderId = $connection->fetchAll('SELECT `'.$tblSalesOrder.'`.entity_id FROM `'.$tblSalesOrder.'` INNER JOIN `'.$tblQuoteIdMask.'` ON `'.$tblSalesOrder.'`.quote_id=`'.$tblQuoteIdMask.'`.quote_id AND `'.$tblQuoteIdMask.'`.masked_id='.$connection->quote($quoteId));
            // Mage::app()->getFrontController()->getResponse()->setRedirect(Mage::getUrl('customer/account'));
         }
-        //print_r($this->_orderFactory->loadByAttribute('entity_id',$orderId));
         return $this->_orderFactory->loadByAttribute('entity_id',$orderId);
     }
 
@@ -178,8 +177,6 @@ class Qrcode extends Template
             $params->request = $request;
             $response = $client->doPay($params);
         } catch (\Exception $exception) {
-            echo "<pre>";
-            die(print_r($exception));
             $errorResponse = new \StdClass;
             $errorResponse->errors = new \StdClass;
             $errorResponse->errors->code = 1;
