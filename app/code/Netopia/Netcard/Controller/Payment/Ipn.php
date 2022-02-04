@@ -148,13 +148,13 @@ class Ipn extends Action implements CsrfAwareActionInterface {
                 break;
 
             case 'paid':
-                if ($objPmReq->objPmNotify->errorCode != 0) {
-                    $this->_handlePaymentDenial();
-                } else {
-
+                if($objPmReq->objPmNotify->errorCode == 0) {
                     $this->_handleAuthorization(0);
+                } elseif ($objPmReq->objPmNotify->errorCode == 56) {
+                    // Nothing
+                }  else {
+                    $this->_handlePaymentDenial();
                 }
-
                 break;
 
             case 'canceled':
