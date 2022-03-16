@@ -1,4 +1,4 @@
-# NETOPIA Payments module for Magento 2.4.2
+# NETOPIA Payments module for Magento 2.4.X
 ###### (for previous versions using the other branches of this GitHub repository)
 
 ## Options
