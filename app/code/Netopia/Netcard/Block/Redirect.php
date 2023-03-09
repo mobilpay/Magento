@@ -178,20 +178,20 @@ class Redirect extends Template
             // Missing shiping address info to Obj
 
             // Add Params in Obj
-            $cardSummeryArr = array();
+            $cardSummaryArr = array();
             $cardAllItems = $order->getAllVisibleItems();
             foreach($cardAllItems as $item) {
                 $cardItem['name'] = $item->getName();
                 $cardItem['price'] = $item->getPrice();
                 $cardItem['quantity'] = $item->getQtyOrdered();
                 $cardItem['short_description'] = substr($item->getDescription(), 0, 100);
-                $cardSummeryArr[] = $cardItem; 
+                $cardSummaryArr[] = $cardItem; 
             }
 
-            $cartSummeryJson = json_encode($cardSummeryArr);
+            $cartSummaryJson = json_encode($cardSummaryArr);
             $objPmReqCard->params = array(
                 "Vesion" => "Magento 2",
-                "cartSummery" =>  $cartSummeryJson
+                "cartSummary" =>  $cartSummaryJson
             );
             
 
