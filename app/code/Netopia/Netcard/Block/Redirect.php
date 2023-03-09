@@ -174,6 +174,26 @@ class Redirect extends Template
             $billingAddress->mobilePhone = $billing->getTelephone();
 
             $objPmReqCard->invoice->setBillingAddress($billingAddress);
+            
+            // Missing shiping address info to Obj
+
+            // Add Params in Obj
+            $cardSummeryArr = array();
+            $cardAllItems = $order->getAllVisibleItems();
+            foreach($cardAllItems as $item) {
+                $cardItem['name'] = $item->getName();
+                $cardItem['price'] = $item->getPrice();
+                $cardItem['quantity'] = $item->getQtyOrdered();
+                $cardItem['short_description'] = substr($item->getDescription(), 0, 100);
+                $cardSummeryArr[] = $cardItem; 
+            }
+
+            $cartSummeryJson = json_encode($cardSummeryArr);
+            $objPmReqCard->params = array(
+                "Vesion" => "Magento 2",
+                "cartSummery" =>  $cartSummeryJson
+            );
+            
 
             $objPmReqCard->encrypt($x509FilePath);
         } catch (\Exception $e) {
