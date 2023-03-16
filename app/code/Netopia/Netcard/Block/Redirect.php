@@ -184,7 +184,7 @@ class Redirect extends Template
                 $cardItem['name'] = $item->getName();
                 $cardItem['price'] = $item->getPrice();
                 $cardItem['quantity'] = $item->getQtyOrdered();
-                $cardItem['short_description'] = substr($item->getDescription(), 0, 100);
+                $cardItem['short_description'] = !is_null($item->getDescription()) || !empty($item->getDescription()) ? substr($item->getDescription(), 0, 100) : 'no description';
                 $cardSummaryArr[] = $cardItem; 
             }
 
