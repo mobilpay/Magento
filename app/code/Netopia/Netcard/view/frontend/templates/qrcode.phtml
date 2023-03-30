@@ -7,7 +7,7 @@
     if($qrcodeDta->errors->code === "0") {
        ?>
         <div class="" >
-            <img src="https://suport.mobilpay.ro/np-logo-blue.svg" width="134" alt="NETOPIA Payments>"/>
+            <img src="<?php echo $this->getViewFileUrl('Netopia_Netcard::NETOPIA_Payments.svg');?>" width="134" alt="NETOPIA Payments>"/>
             <h1 class="">
                 <span class="" ><?= __('Please, scan the "Qr Code" with your mobilPay WALLET') ?></span>
             </h1>
@@ -70,7 +70,7 @@
     } else {
         $msg = (isset($qrcodeDta->errors->message) && !is_null($qrcodeDta->errors->message)) ? $qrcodeDta->errors->message : ""; 
         echo '<div class="">
-                    <img src="https://suport.mobilpay.ro/np-logo-blue.svg" width="134" alt="NETOPIA Payments>"/>
+                    <img src="'.$this->getViewFileUrl('Netopia_Netcard::NETOPIA_Payments.svg').'" width="134" alt="NETOPIA Payments>"/>
                     <h1 class="">
                         <span class="" >A aparut o eroare</span>
                     </h1>
