@@ -190,7 +190,9 @@ class Redirect extends Template
 
             $cartSummaryJson = json_encode($cardSummaryArr);
             $objPmReqCard->params = array(
-                "Vesion" => "Magento 2",
+                "vesion" => "1.0.0",
+                "api" => "1.0",
+                "platform" => "Magento 2",
                 "cartSummary" =>  $cartSummaryJson
             );
             
