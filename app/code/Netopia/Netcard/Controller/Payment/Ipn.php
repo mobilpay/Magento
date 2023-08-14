@@ -31,6 +31,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
     protected $_order;
     protected $_objPmReq;
     protected $_builderInterface;
+    protected $_newOrderStatus;
 
     /**
      * Ipn constructor.

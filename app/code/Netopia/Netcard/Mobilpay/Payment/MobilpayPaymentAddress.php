@@ -19,6 +19,10 @@
         public $type = null;
         public $firstName = null;
         public $lastName = null;
+        public $country = null;
+        public $city = null;
+        public $zipCode = null;
+        public $state = null;
         public $address = null;
         public $email = null;
         public $mobilePhone = null;

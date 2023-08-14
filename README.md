@@ -59,6 +59,6 @@ NETOPIA Payments development team try to keep compatibility of the Magento modul
 ## Tested up to : 
 Magento : **2.4.6**
 
-PHP : **8.1.7**
+PHP : **8.2.8**
 
 Openssl : **1.1.1**
