@@ -61,4 +61,4 @@ Magento : **2.4.6**
 
 PHP : **8.2.8**
 
-Openssl : **1.1.1**
+Openssl : **3.0**
