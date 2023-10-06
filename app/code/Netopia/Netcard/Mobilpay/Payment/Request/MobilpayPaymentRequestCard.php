@@ -31,7 +31,7 @@
             $elems = $elem->getElementsByTagName('invoice');
             if($elems->length != 1)
             {
-                throw new Exception('MobilpayPaymentRequestCard::loadFromXml failed; invoice element is missing', self::ERROR_LOAD_FROM_XML_ORDER_INVOICE_ELEM_MISSING);
+                throw new \Exception('MobilpayPaymentRequestCard::loadFromXml failed; invoice element is missing', self::ERROR_LOAD_FROM_XML_ORDER_INVOICE_ELEM_MISSING);
             }
 
             $this->invoice = new MobilpayPaymentInvoice($elems->item(0));
@@ -73,6 +73,14 @@
             //set Invoice details to Dom instance
             $xmlElem			= $this->invoice->createXmlElement($this->_xmlDoc);
             $rootElem->appendChild($xmlElem);
+
+            // Set ipn_cipher
+            if($this->ipnCipher !== null)
+            {
+                $xmlElem = $this->_xmlDoc->createElement('ipn_cipher');
+                $xmlElem->nodeValue = $this->ipnCipher;
+                $rootElem->appendChild($xmlElem);
+            }
 
             // set Parameters
             if(is_array($this->params) && sizeof($this->params) > 0)

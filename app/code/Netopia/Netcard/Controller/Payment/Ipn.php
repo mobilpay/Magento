@@ -123,6 +123,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         $errorCode = 0;
         $errorType = MobilpayPaymentRequestAbstract::CONFIRM_ERROR_TYPE_NONE;
         $errorMessage = '';
+
         $this->_initData($objPmReq);
 
         switch ($objPmReq->objPmNotify->action) {
@@ -373,13 +374,21 @@ class Ipn extends Action implements CsrfAwareActionInterface {
         
         error_reporting(E_ALL);
         $objPmReq = false;
+        $cipher     = 'rc4'; // openSSL 3
+        $iv         = null;   // openSSL 3
         $request = $this->getRequest();
         if ($request->isPost())
         {
             $envKey = $request->getParam('env_key', false);
             $envData = $request->getParam('data', false);
-       
 
+            /* Set CHIPER & IV -  openSSL 3 */
+            $cipher = $request->getParam('cipher', false);
+            if( $cipher != 'rc4') 
+                {
+                $iv = $request->getParam('iv', false);
+                }
+        
             if ($envKey && $envData)
             {
                 $filePath = $this->_moduleDirReader->getModuleDir('etc', 'Netopia_Netcard');
@@ -403,7 +412,7 @@ class Ipn extends Action implements CsrfAwareActionInterface {
 
                 try
                 {
-                    $objPmReq = MobilpayPaymentRequestAbstract::factoryFromEncrypted($envKey, $envData, $privateKeyFilePath);
+                    $objPmReq = MobilpayPaymentRequestAbstract::factoryFromEncrypted($envKey, $envData, $privateKeyFilePath,null, $cipher, $iv);
                 } catch (\Exception $e)
                 {
 

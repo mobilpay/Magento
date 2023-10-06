@@ -15,6 +15,8 @@
         <form method="post" id="mobilpay-form" action="<?php echo $paymentUrl ?>">
             <input type="hidden" name="data" value="<?php echo $formData['data'] ?>"/>
             <input type="hidden" name="env_key" id="env_key" value="<?php echo $formData['form_key'] ?>"/>
+            <input type="hidden" name="cipher" value="<?php echo $formData['cipher'];?>" /> 
+	        <input type="hidden" name="iv" value="<?php echo $formData['iv'];?>" />
             <!-- <button type="submit" class="button">SEND (Temporary - Test MODE)</button> -->
         </form>
 

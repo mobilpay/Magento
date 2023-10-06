@@ -207,6 +207,8 @@ class Redirect extends Template
             $result['status'] = 1;
             $result['data'] = $objPmReqCard->getEncData();
             $result['form_key'] = $objPmReqCard->getEnvKey();
+            $result['cipher'] = $objPmReqCard->getCipher();
+            $result['iv'] = $objPmReqCard->getIv();
             $result['billing'] = $billing->getData();
 
         } else {
