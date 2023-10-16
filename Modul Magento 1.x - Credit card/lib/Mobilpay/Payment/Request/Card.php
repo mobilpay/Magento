@@ -2,7 +2,7 @@
 /**
  * Class Mobilpay_Payment_Request_Card
  * This class can be used for accessing mobilpay.ro payment interface for your configured online services
- * @copyright NETOPIA System
+ * @copyright NETOPIA
  * @author Claudiu Tudose
  * @version 1.0
  * 
@@ -64,12 +64,14 @@ class Mobilpay_Payment_Request_Card extends Mobilpay_Payment_Request_Abstract
 		$xmlElem->nodeValue	= $this->signature;
 		$rootElem->appendChild($xmlElem);
 		
-		$xmlElem			= $this->_xmlDoc->createElement('service');
-		$xmlElem->nodeValue	= $this->service;
-		$rootElem->appendChild($xmlElem);
-		
 		$xmlElem			= $this->invoice->createXmlElement($this->_xmlDoc);
 		$rootElem->appendChild($xmlElem);
+		if($this->ipnCipher !== null)
+		{
+			$xmlElem = $this->_xmlDoc->createElement('ipn_cipher');
+			$xmlElem->nodeValue = $this->ipnCipher;
+			$rootElem->appendChild($xmlElem);	
+		}
 		
 		if(is_array($this->params) && sizeof($this->params) > 0)
 		{
