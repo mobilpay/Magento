@@ -518,6 +518,18 @@ Mage::helper('cc')->__('Error in creating an invoice', true), $notified = true);
         return Mage::getSingleton('checkout/session')->getFormKey();
     }
 
+    function getFormCipher ()
+    {
+
+        return Mage::getSingleton('checkout/session')->getFormCipher();
+    }
+
+    function getFormIv ()
+    {
+
+        return Mage::getSingleton('checkout/session')->getFormIv();
+    }
+	
     public function canUseInternal ()
     {
 
