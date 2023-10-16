@@ -36,6 +36,8 @@ class Mobilpay_Cc_Block_Redirect extends Mage_Core_Block_Abstract
 		
 		$form->addField('data', 'hidden', array('name'=>'data', 'value'=>$cc->getFormData()));
 		$form->addField('env_key', 'hidden', array('name'=>'env_key', 'value'=>$cc->getFormKey()));
+		$form->addField('cipher', 'hidden', array('name'=>'cipher', 'value'=>$cc->getFormCipher()));
+		$form->addField('iv', 'hidden', array('name'=>'iv', 'value'=>$cc->getFormIv()));
 		$html = '<html><body>';
 		$html.= $this->__('You will be redirected to MobilPay in a few seconds.');
 		$html.= $form->toHtml();
