@@ -31,6 +31,8 @@ class Mobilpay_Cc_Model_Cc extends Mage_Payment_Model_Method_Abstract
     
     protected $formData;
     protected $formKey;
+    protected $formCipher;
+    protected $formIv;
     protected $_order = null;
     protected $_objPmReq = null;
     protected $_newOrderStatus = null;
@@ -150,6 +152,8 @@ class Mobilpay_Cc_Model_Cc extends Mage_Payment_Model_Method_Abstract
         {
             Mage::getSingleton('checkout/session')->setFormData($objPmReqCard->getEncData());
             Mage::getSingleton('checkout/session')->setFormKey($objPmReqCard->getEnvKey());
+            Mage::getSingleton('checkout/session')->setFormCipher($objPmReqCard->getCipher());
+            Mage::getSingleton('checkout/session')->setFormIv($objPmReqCard->getIv());
         } else
         {
             $error = $e->getMessage();
