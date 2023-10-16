@@ -140,6 +140,16 @@ class Mobilpay_Cc_CcController extends Mage_Core_Controller_Front_Action
         if ($request->isPost())
         {
             $envKey = $request->getParam('env_key', false);
+		$cipher     = 'rc4';
+		$iv         = null;
+		if(array_key_exists('cipher', $request->getParam('cipher', false)))
+		{
+		    $cipher = $request->getParam('cipher', false);
+		    if(array_key_exists('iv', $request->getParam('iv', false)))
+		    {
+		        $iv = $request->getParam('iv', false);
+		    }
+		}
             $envData = $request->getParam('data', false);
             if ($envKey && $envData)
             {
@@ -155,7 +165,7 @@ class Mobilpay_Cc_CcController extends Mage_Core_Controller_Front_Action
 
                 try
                 {
-                    $objPmReq = Mobilpay_Payment_Request_Abstract::factoryFromEncrypted($envKey, $envData, $privateKeyFilePath);
+                    $objPmReq = Mobilpay_Payment_Request_Abstract::factoryFromEncrypted($envKey, $envData, $privateKeyFilePath, null, $cipher, $iv);
                 } catch (Exception $e)
                 {
                     
