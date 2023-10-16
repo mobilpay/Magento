@@ -142,10 +142,10 @@ class Mobilpay_Cc_CcController extends Mage_Core_Controller_Front_Action
             $envKey = $request->getParam('env_key', false);
 		$cipher     = 'rc4';
 		$iv         = null;
-		if(array_key_exists('cipher', $request->getParam('cipher', false)))
+		if(array_key_exists('cipher', $request->getParams()))
 		{
 		    $cipher = $request->getParam('cipher', false);
-		    if(array_key_exists('iv', $request->getParam('iv', false)))
+		    if(array_key_exists('iv', $request->getParams()))
 		    {
 		        $iv = $request->getParam('iv', false);
 		    }
