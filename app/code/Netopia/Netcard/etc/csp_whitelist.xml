@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="form-action">
+            <values>
+                <value id="https://secure-sandbox.netopia-payments.com" type="host" />
+                <value id="https://secure.netopia-payments.com" type="host" />
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="https://secure-sandbox.netopia-payments.com" type="host" />
+                <value id="https://secure.netopia-payments.com" type="host" />
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="https://secure-sandbox.netopia-payments.com" type="host" />
+                <value id="https://secure.netopia-payments.com" type="host" />
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

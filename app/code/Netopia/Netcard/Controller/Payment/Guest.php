@@ -103,16 +103,12 @@ class Guest extends Action
             return $this->resultRedirectFactory->create()->setPath('checkout/cart');
         }
 
-
-        // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $customerSession = $objectManager->get('Magento\Customer\Model\Session');
         if($customerSession->isLoggedIn()) {
             return $this->resultRedirectFactory->create()->setPath('netopia/payment/success/?&orderId='.$orderId);
         }
    
-
-        if ($order->getCanSendNewEmailFlag()) { 
-            // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        if ($order->getCanSendNewEmailFlag() && is_null($order->getEmailSent())) { 
             $emailSender = $objectManager->create('\Magento\Sales\Model\Order\Email\Sender\OrderSender');
             $emailSender->send($order);
         }

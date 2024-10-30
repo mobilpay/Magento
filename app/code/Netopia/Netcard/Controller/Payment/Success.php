@@ -125,7 +125,7 @@ class Success extends Action
 
         
 
-        if ($order->getCanSendNewEmailFlag()) { 
+        if ($order->getCanSendNewEmailFlag() && is_null($order->getEmailSent())) { 
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $emailSender = $objectManager->create('\Magento\Sales\Model\Order\Email\Sender\OrderSender');
             $emailSender->send($order);
