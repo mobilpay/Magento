@@ -338,21 +338,20 @@ class Ipn extends Action implements CsrfAwareActionInterface {
 
     protected function _handleCapture()
     {
-        $payment = $this->_order->getPayment();  
+        $payment = $this->_order->getPayment(); 
         $payment->setPreparedMessage($this->_objPmReq->objPmNotify->errorMessage);
         $payment->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
         $payment->setIsTransactionClosed(0);
         $payment->setIsTransactionPending(false);
         if ($this->_order->getStatus() == Order::STATE_PROCESSING) {
             $payment->setParentTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
-            $payment->registerCaptureNotification($this->_objPmReq->objPmNotify->processedAmount);
+            $payment->registerCaptureNotification((float)$this->_objPmReq->objPmNotify->processedAmount, false);
             $payment->setAmount($this->_objPmReq->objPmNotify->processedAmount);
-
         } else {
             $payment->setAmount($this->_objPmReq->objPmNotify->processedAmount);
             $payment->setTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
             $payment->setParentTransactionId($this->getRealOrderId($this->_objPmReq->objPmNotify->purchaseId));
-            $payment->registerCaptureNotification($this->_objPmReq->objPmNotify->processedAmount);
+            $payment->registerCaptureNotification((float)$this->_objPmReq->objPmNotify->processedAmount, false);
         }
         $trans = $this->_builderInterface;
         $transaction = $trans->setPayment($payment)
@@ -364,9 +363,28 @@ class Ipn extends Action implements CsrfAwareActionInterface {
             ->setFailSafe(true)
             //build method creates the transaction and returns the object
             ->build(\Magento\Sales\Model\Order\Payment\Transaction::TYPE_CAPTURE);
-        $payment->addTransactionCommentsToOrder($transaction, $this->_objPmReq->objPmNotify->errorMessage . " - ");
+
+        /** Set Order Comment History */
+        $totalOrderamount =  number_format((float)$transaction->getPayment()->getAmountOrdered(), 2, '.', '');
+        $amountPaid = $this->_order->getGrandTotal();
+        $totalPaidAmount = !empty($amountPaid) ? number_format((float)$amountPaid, 2, '.', '') : 0;
+
+        if($totalPaidAmount != $this->_objPmReq->objPmNotify->originalAmount) {
+            $payment->addTransactionCommentsToOrder(
+                $transaction, 
+                __('%1 , Amount: %2 %3 (%4) ', $this->_objPmReq->objPmNotify->errorMessage, $totalPaidAmount, $this->_objPmReq->invoice->currency, $this->_objPmReq->objPmNotify->originalAmount)
+            );
+        } else {
+            $payment->addTransactionCommentsToOrder(
+                $transaction, 
+                __('%1 , Amount: %2 %3', $this->_objPmReq->objPmNotify->errorMessage, $totalPaidAmount, $this->_objPmReq->invoice->currency)
+            );
+        }
+        
+        $notifyComment = $this->_objPmReq->objPmNotify->errorMessage.' | Suma totala a comenzii : '. $totalOrderamount . ' '.$this->_order->getOrderCurrencyCode().' | Suma platita: '.$this->_objPmReq->objPmNotify->originalAmount;
         $this->_order->setStatus(Order::STATE_COMPLETE);
-        $this->_order->save();
+        $this->_order->addStatusHistoryComment($notifyComment);
+        $this->_order->save();        
     }
 
     private function _processRequest ()

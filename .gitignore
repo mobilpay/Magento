@@ -1,3 +1,4 @@
 .idea/
 app/code/Netopia/Netcard/etc/certificates/*.cer
 app/code/Netopia/Netcard/etc/certificates/*.key
+.DS_Store

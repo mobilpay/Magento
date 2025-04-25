@@ -190,7 +190,7 @@ class Redirect extends Template
 
             $cartSummaryJson = json_encode($cardSummaryArr);
             $objPmReqCard->params = array(
-                "version" => "1.0.1",
+                "version" => "1.0.2",
                 "api" => "1.0",
                 "platform" => "Magento 2.4",
                 "cartSummary" =>  $cartSummaryJson
