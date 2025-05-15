@@ -106,6 +106,8 @@ class Redirect extends Template
         $shipping = $this->getOrder()->getShippingAddress();
         $billing = $this->getOrder()->getBillingAddress();
         $order = $this->getOrder();
+        $orderData = $order->getData();
+        $increment_id = $order->getIncrementId();
         $result = [];
 
         try {
@@ -149,9 +151,9 @@ class Redirect extends Template
 
             $cart_description = $this->getConfigData('description');
             if ($cart_description != '') {
-                $objPmReqCard->invoice->details = $cart_description;
+                $objPmReqCard->invoice->details = $cart_description.' '.$increment_id;
             } else {
-                $objPmReqCard->invoice->details = "Netopia - Magento 2 - Default description";
+                $objPmReqCard->invoice->details = "NETOPIA Payments".' _ '.$increment_id;
             }
 
             // Add billing address info to Obj
@@ -190,7 +192,7 @@ class Redirect extends Template
 
             $cartSummaryJson = json_encode($cardSummaryArr);
             $objPmReqCard->params = array(
-                "version" => "1.0.2",
+                "version" => "1.0.3",
                 "api" => "1.0",
                 "platform" => "Magento 2.4",
                 "cartSummary" =>  $cartSummaryJson

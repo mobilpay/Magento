@@ -61,6 +61,7 @@ Magento : **2.4.6**
 
 PHP : **8.2.8**
 
-Openssl : **3.0*
+Openssl : **3.0**
 #### Change Log
-* v1.0.2: Set matched order comment on foreign currency.*
+* v1.0.2: Set matched order comment on foreign currency.
+* v1.0.3: Add INCREMENT ID on transaction description.
